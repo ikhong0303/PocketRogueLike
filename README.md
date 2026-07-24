@@ -155,7 +155,7 @@
 
 ### 4.5 UI & Localization 모듈
 
-* **[`BattleUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/BattleUI.cs)**: 플레이어/적 스탠딩 스프라이트, 체력바, 전투 로그 텍스트 애니메이션 및 스페이스바 포획 / H 키 회복약 안내 UI.
+* **[`BattleUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/BattleUI.cs)**: 플레이어/적 스탠딩 스프라이트(플레이어 냥코 출전 시 X 스케일 -1 적용으로 적과 마주보기), 체력바, 전투 로그 텍스트 애니메이션 및 스페이스바 포획 / H 키 회복약 / V 키 보유 포켓몬 토글 안내 UI.
 * **[`StarterSelectUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/StarterSelectUI.cs)**: 예산 10점 제한 기반 6개 스타팅 카드의 자가 생성(Self-Building) 그리드 패널.
 * **[`PartyUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/PartyUI.cs)**: 전투 화면 좌측 상단 6개 파티 슬롯 수직(위에서 아래로) 정렬 패널.
 * **[`PartyManageModalUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/PartyManageModalUI.cs)**:

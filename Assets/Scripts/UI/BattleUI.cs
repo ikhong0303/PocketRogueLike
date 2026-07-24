@@ -182,7 +182,7 @@ namespace PocketRoguelike
 
             if (player != null && player.Data != null)
             {
-                if (playerCatImage != null) { playerCatImage.gameObject.SetActive(true); playerCatImage.rectTransform.localScale = Vector3.one; playerCatImage.sprite = player.Data.sprite; }
+                if (playerCatImage != null) { playerCatImage.gameObject.SetActive(true); playerCatImage.rectTransform.localScale = new Vector3(-1f, 1f, 1f); playerCatImage.sprite = player.Data.sprite; }
                 if (playerCatNameText != null) playerCatNameText.text = LanguageManager.CatName(player.Data);
                 if (playerCatLevelText != null) playerCatLevelText.text = LanguageManager.Format("level", player.Level);
                 if (playerSkillText != null) playerSkillText.text = LanguageManager.Format("skill_line", LanguageManager.SkillName(player.Data));
