@@ -49,25 +49,25 @@ TextureImporter:
     second: cat_65
   - first:
       213: 4605472415565259728
-    second: cat_66
+    second: cat_65
   - first:
       213: -848222480344029764
-    second: cat_67
+    second: cat_66
   - first:
       213: 3421411938542811520
-    second: cat_68
+    second: cat_67
   - first:
       213: -7023522572460467567
-    second: cat_69
+    second: cat_68
   - first:
       213: -5822129790577981597
-    second: cat_70
+    second: cat_69
   - first:
       213: -1862960486197851111
-    second: cat_71
+    second: cat_70
   - first:
       213: 8490361191251227139
-    second: cat_72
+    second: cat_71
   - first:
       213: 8427053649077679932
     second: cat_73
@@ -76,16 +76,16 @@ TextureImporter:
     second: cat_74
   - first:
       213: -4413346445748805958
-    second: cat_73
+    second: cat_72
   - first:
       213: -2171322577155928864
-    second: cat_74
+    second: cat_73
   - first:
       213: -8374462624965079245
-    second: cat_75
+    second: cat_74
   - first:
       213: 9202291224576843630
-    second: cat_76
+    second: cat_75
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -505,28 +505,6 @@ TextureImporter:
       name: cat_65
       rect:
         serializedVersion: 2
-        x: 918
-        y: 630
-        width: 34
-        height: 67
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 849e3f538e85d6f30800000000000000
-      internalID: 4570406951211755848
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: cat_66
-      rect:
-        serializedVersion: 2
         x: 995
         y: 505
         width: 204
@@ -546,7 +524,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_67
+      name: cat_66
       rect:
         serializedVersion: 2
         x: 22
@@ -568,7 +546,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_68
+      name: cat_67
       rect:
         serializedVersion: 2
         x: 267
@@ -590,7 +568,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_69
+      name: cat_68
       rect:
         serializedVersion: 2
         x: 492
@@ -612,7 +590,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_70
+      name: cat_69
       rect:
         serializedVersion: 2
         x: 712
@@ -634,7 +612,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_71
+      name: cat_70
       rect:
         serializedVersion: 2
         x: 992
@@ -656,7 +634,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_72
+      name: cat_71
       rect:
         serializedVersion: 2
         x: 19
@@ -678,7 +656,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_73
+      name: cat_72
       rect:
         serializedVersion: 2
         x: 250
@@ -700,7 +678,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_74
+      name: cat_73
       rect:
         serializedVersion: 2
         x: 509
@@ -722,7 +700,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_75
+      name: cat_74
       rect:
         serializedVersion: 2
         x: 723
@@ -744,7 +722,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_76
+      name: cat_75
       rect:
         serializedVersion: 2
         x: 977
@@ -779,34 +757,31 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      51-75_0: -6089861473235189946
-      51-75_1: 681550278341719305
-      51-75_10: -7086625949625740876
-      51-75_11: 647266450005148682
-      51-75_12: 912822916546114931
-      51-75_13: 7660526508752382035
-      51-75_14: 4570406951211755848
-      51-75_15: 4605472415565259728
-      51-75_16: -848222480344029764
-      51-75_17: 3421411938542811520
-      51-75_18: -7023522572460467567
-      51-75_19: -5822129790577981597
-      51-75_2: 3116056687678369132
-      51-75_20: -1862960486197851111
-      51-75_21: 8490361191251227139
-      51-75_22: 8427053649077679932
-      51-75_23: 7073613389148197119
-      51-75_24: -4413346445748805958
-      51-75_25: -2171322577155928864
-      51-75_26: -8374462624965079245
-      51-75_27: 9202291224576843630
-      51-75_3: -7554750472309158402
-      51-75_4: 3290269236878414737
-      51-75_5: 7068562917594241019
-      51-75_6: -8254492481569487873
-      51-75_7: 4119890148026873833
-      51-75_8: -7271018539261688610
-      51-75_9: -8092224809747267556
+      cat_51: -6089861473235189946
+      cat_52: 681550278341719305
+      cat_53: 3116056687678369132
+      cat_54: -7554750472309158402
+      cat_55: 3290269236878414737
+      cat_56: 7068562917594241019
+      cat_57: -8254492481569487873
+      cat_58: 4119890148026873833
+      cat_59: -7271018539261688610
+      cat_60: -8092224809747267556
+      cat_61: -7086625949625740876
+      cat_62: 647266450005148682
+      cat_63: 912822916546114931
+      cat_64: 7660526508752382035
+      cat_65: 4605472415565259728
+      cat_66: -848222480344029764
+      cat_67: 3421411938542811520
+      cat_68: -7023522572460467567
+      cat_69: -5822129790577981597
+      cat_70: -1862960486197851111
+      cat_71: 8490361191251227139
+      cat_72: -4413346445748805958
+      cat_73: -2171322577155928864
+      cat_74: -8374462624965079245
+      cat_75: 9202291224576843630
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
