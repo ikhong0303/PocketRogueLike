@@ -33,9 +33,14 @@
   - **300종 고양이 컬렉션**: 도감 번호(1~300) 기반 스탯, 스피드, 희귀도 및 코스트 관리.
   - **오토 턴제 전투**: 스피드(도감 번호) 순서대로 자동으로 실행되는 빠른 속도의 전투.
   - **실시간 타이밍 캐치 시스템**: [SPACE] 키 입력으로 야생 고양이 포획 (적 잔여 HP, 희귀도, 3-Shake 확률 적용).
+  - **인게임 회복약 & 기력의 조각 (부활)**:
+    - **[H] 키 회복약**: 전투 중 즉시 출전 냥코 체력 50% 회복.
+    - **기력의 조각 (10% 드랍)**: 파티 관리(`P`)에서 쓰러진 냥코를 **체력 50%로 부활**.
   - **코스트 예산제 스타팅 선택**: 최대 10점 예산 내에서 해금된 고양이 3마리로 런 시작.
   - **무작위 100스테이지 백본**: 런 시작 시 300종 중 100종을 추출·정렬하여 스테이지별 난이도 상승 곡선 생성.
-  - **다국어(한/영) 실시간 전환 지원**: `LanguageManager` 기반 UI 및 텍스트 동적 동기화.
+  - **100% 완전 다국어(한/영) 실시간 전환 지원**:
+    - `LanguageManager` 기반 스킬명 사전 및 키워드 자동 영문 번역기 탑재.
+    - 영어 모드 선택 시 한국어 글자 0% 완전 배제 보장.
 
 ---
 
@@ -50,7 +55,9 @@
                  │                          │
          [오토 턴제 전투]                   │
           ├─ [SPACE] ➔ 고양이 캐치 (파티 편입)│ (다음 스테이지)
-          └─ 승리 ➔ 전투 결과 및 보상 ──────┘
+          ├─ [H] ➔ 회복약 (HP 50% 회복)     │
+          ├─ [P] ➔ 파티 관리 & 기력의 조각 부활
+          └─ 승리 ➔ 몬스터볼/회복약/기력의조각 드랍 ─┘
                  │
            (파티 전멸) ➔ [게임 오버 (런 종료)]
                  │
@@ -72,11 +79,11 @@
 | 상태 (`GameState`) | 설명 |
 | :--- | :--- |
 | `StarterSelect` | 런 시작 전 스타팅 고양이 선택 패널 (예산 10점 제한) |
-| `StageBattle` | 오토 배틀 진행 중. [SPACE]로 포획 진입, [P]로 파티 관리 진입 |
+| `StageBattle` | 오토 배틀 진행 중. [SPACE]로 포획, [H]로 회복약 사용, [P]로 파티 관리 진입 |
 | `Catching` | 몬스터볼 투척 연출 및 3-Shake 포획 확률 계산 모드 |
-| `PartyManage` | 파티(최대 6마리) 목록 확인, 고양이 교체/방출/활성화 |
-| `StageClear` | 스테이지 승리 후 아이템 보상(몬스터볼, 회복약) 수령 |
-| `NextStage` | 다음 스테이지 진행 처리 및 10스테이지 단위 보스 회복 적용 |
+| `PartyManage` | 파티(최대 6마리) 목록 확인, 고양이 교체/방출/부활 |
+| `StageClear` | 스테이지 승리 후 전리품 보상(몬스터볼, 회복약, 기력의 조각) 수령 |
+| `NextStage` | 다음 스테이지 진행 처리 및 10스테이지 단위 보스 전원 완치 적용 |
 | `GameOver` | 파티 전멸 시 결과 화면 표시 |
 | `Victory` | 100스테이지 보스 격파 시 승리 연출 |
 
@@ -91,7 +98,8 @@
 * **주요 기능**:
   - `ChangeState(GameState newState)`: 상태 변경 이벤트 `OnStateChanged` 전파.
   - `StartRun(IReadOnlyList<CatDataSO> starters)`: 스타팅 고양이 검증, 예산 체크 후 런 개시.
-  - Global Input Handling: `New Input System` 및 Legacy `Input` 양방향 감지로 [SPACE], [P], [ESC] 키 입력 처리.
+  - Global Input Handling: `New Input System` 및 Legacy `Input` 양방향 감지로 [SPACE], [H], [P], [ESC] 키 입력 처리.
+  - `TryUsePotion()`: [H] 키 입력 시 출전 중인 냥코의 체력 50% 회복.
   - 전투/포획 결과 수신에 따른 파티 관리 및 다음 스테이지 전환 중계.
 
 ---
@@ -106,12 +114,15 @@
   - `ResumeAfterPlayerSwitch()`: 전투 중 고양이 교체 시 내 턴 소모 여부에 따른 적 페널티 공격 루틴(`EnemyFreeAttackAfterSwitch`) 수행.
 
 #### [`CatchManager.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/Battle/CatchManager.cs)
-* **역할**: 야생 고양이 포획 및 인벤토리(몬스터볼, 회복약) 드랍 관리.
-* **주요 공식**:
+* **역할**: 야생 고양이 포획 및 인벤토리(몬스터볼, 회복약, 기력의 조각) 드랍 관리.
+* **주요 공식 & 수치**:
   - **Shake 통과 확률 (`CalculateShakeChance`)**:
     $$P_{\text{shake}} = \text{Lerp}(\text{fullHpChance}, \text{lowHpChance}, (1 - \text{HpRatio})^{0.55}) - (\text{Rarity} \times 0.025)$$
   - **3-Shake 연출**: 3번의 확률 체크를 모두 통과해야 최종 포획 성공.
-  - **전리품 드랍 (`RollVictoryDrops`)**: 스테이지 승리 시 몬스터볼(10%) 및 회복약(10%) 개별 확률 획득.
+  - **전리품 드랍 (`RollVictoryDrops`)**:
+    - **몬스터볼**: 10% 확률 획득
+    - **회복약**: 10% 확률 획득 (사용 시 HP 50% 회복)
+    - **기력의 조각**: 10% 확률 획득 (파티 화면에서 쓰러진 냥코 **HP 50% 부활**)
 
 ---
 
@@ -144,10 +155,15 @@
 
 ### 4.5 UI & Localization 모듈
 
-* **[`BattleUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/BattleUI.cs)**: 플레이어/적 스탠딩 스프라이트, 체력바, 전투 로그 텍스트 애니메이션 및 스페이스바 포획 버튼 UI.
+* **[`BattleUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/BattleUI.cs)**: 플레이어/적 스탠딩 스프라이트, 체력바, 전투 로그 텍스트 애니메이션 및 스페이스바 포획 / H 키 회복약 안내 UI.
 * **[`StarterSelectUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/StarterSelectUI.cs)**: 예산 10점 제한 기반 6개 스타팅 카드의 자가 생성(Self-Building) 그리드 패널.
-* **[`PartyManageModalUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/PartyManageModalUI.cs)**: 6마리 초과 포획 시 방출/교체 모달 및 전투 중 파티 교체 인터페이스.
-* **[`LanguageManager.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/LanguageManager.cs)**: 한국어/영어 동적 언어 전환 매니저 및 `OnLanguageChanged` 이벤트 브로드캐스트.
+* **[`PartyManageModalUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/PartyManageModalUI.cs)**:
+  - 6마리 슬롯 교체/방출 및 **[부활] (REVIVE)** 버튼 지원.
+  - 보유 중인 기력의 조각 개수 실시간 표시 및 쓰러진 냥코 HP 50% 부활 처리.
+* **[`LanguageManager.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/LanguageManager.cs)**:
+  - 한국어/영어 동적 언어 전환 매니저.
+  - `SkillTranslationMap` 및 `TranslateSkillNameToEnglish`: 300종 대표 스킬 및 키워드 자동 영문 번역.
+  - `ContainsKorean`: 영어 모드에서 한국어 문자열 출력을 100% 완전 차단.
 * **[`LocalizedText.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/LocalizedText.cs)**: TextMeshProUGUI 컴포넌트에 자동 부착되어 언어 변경 시 텍스트 즉시 갱신.
 
 ---
@@ -165,9 +181,9 @@
 * **[`CatSpriteRenamerWindow.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/Editor/CatSpriteRenamerWindow.cs)**:
   - 100종 스프라이트 시트 meta 파일(`internalIDToNameTable`, `nameFileIdTable`)의 서브 스프라이트 네이밍을 `cat_1 ~ cat_100`으로 일괄 동기화하는 커스텀 에디터 윈도우.
 * **[`MainGameSceneBuilder.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/Editor/MainGameSceneBuilder.cs)**:
-  - 메인 게임 씬(`MainGame.unity`)의 Canvas, UI 패널, EventSystem 및 컴포넌트 바인딩을 자동 구성하는 씬 빌더.
+  - 메인 게임 씬(`MainGame.unity`)의 Canvas, UI 패널(교체/부활/방출 3버튼 레이아웃 포함), EventSystem 및 컴포넌트 바인딩 자동 구성.
 * **[`CatEncyclopediaImporter.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/Editor/CatEncyclopediaImporter.cs)**:
-  - 도감 데이터를 기반으로 `CatData_1.asset ~ CatData_300.asset` 에셋 자동 생성.
+  - 도감 데이터를 기반으로 `CatData_1.asset ~ CatData_300.asset` 에셋 자동 생성 및 깔끔한 영문 이름/스킬 세팅.
 
 ---
 
@@ -190,6 +206,7 @@
 | **Play Mode 진입 시 에디터 예외** | 에디터 스크립트의 `[InitializeOnLoad]` 속성으로 인해 플레이 진입 시 씬 재생성 시도. | `[InitializeOnLoad]` 자동 실행 구문 제거 및 메뉴 항목 기반 실행으로 전환. |
 | **Duplicate Identifier 300000 씬 오류** | YAML 직접 편집 과정에서 FileID 중복 할당 발생. | C# 네이티브 씬 빌더(`MainGameSceneBuilder`)를 제작하여 표준 유니티 API로 씬 재구성. |
 | **CLI 실행 시 유니티 에디터 강제 종료** | PowerShell 강제 종료 명령어 사용으로 에디터 닫힘. | 프로세스 종료 명령을 완전 제거하고 배경 파일 수정 방식으로 전환. |
+| **영어 모드에서 한글 스킬명/이름 노출** | `catNameEnglish` 및 `skillNameEnglish` 데이터에 한글 원본이 포함되어 노출됨. | `ContainsKorean` 검증 및 `SkillTranslationMap` 영문 번역기를 도입하여 영어 모드 시 100% 영문으로만 표기되도록 수정. |
 
 ---
 
@@ -201,12 +218,13 @@
 | :--- | :---: | :--- |
 | **오토 배틀 중** | **`SPACE`** | 몬스터볼 투척 (야생 고양이 포획 시도) |
 | **오토 배틀 중** | **`H`** | 회복약 사용 (출전 고양이 HP 50% 회복) |
-| **오토 배틀 중** | **`P`** | 파티 관리 패널 열기 (고양이 순서 교체 / **부활 버튼으로 쓰러진 냥코 HP 50% 부활**) |
+| **오토 배틀 중** | **`P`** | 파티 관리 패널 열기 (고양이 순서 교체 / **[부활] 버튼으로 쓰러진 냥코 HP 50% 부활**) |
 | **파티 관리 / 모달** | **`ESC`** | 패널 닫기 / 이전 화면으로 돌아가기 |
 | **스타팅 선택 / 결과** | **마우스 클릭** | 고양이 카드 선택 / 부활 및 교체 버튼 클릭 |
 
 ### 7.2 플레이 순서
 1. `Assets/Scenes/MainGame.unity` 씬을 열고 유니티 에디터 상단 **Play(▶)** 버튼을 누릅니다.
 2. **스타팅 선택 화면**에서 예산 10점 내로 원하는 3마리 고양이를 선택하고 `START RUN`을 클릭합니다.
-3. 배틀 진행 중 야생 고양이 체력이 낮아졌을 때 **`SPACE`** 키를 눌러 포획합니다.
-4. 10스테이지마다 나타나는 보스를 격파하여 파티 전체 회복 혜택을 누르고 **100스테이지 최종 보스**에 도전하세요!
+3. 배틀 진행 중 야생 고양이 체력이 낮아졌을 때 **`SPACE`** 키를 눌러 포획하거나, 체력이 부족하면 **`H`** 키로 회복약을 사용합니다.
+4. 냥코가 기절했을 경우 **`P`** 키를 눌러 파티 화면에서 **기력의 조각**으로 부활시킵니다.
+5. 10스테이지마다 나타나는 보스를 격파하여 파티 전체 회복 혜택을 누르고 **100스테이지 최종 보스**에 도전하세요!
