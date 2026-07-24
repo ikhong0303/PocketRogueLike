@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &877877668
+--- !u!1 &766701480
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,9 +127,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 877877671}
-  - component: {fileID: 877877670}
-  - component: {fileID: 877877669}
+  - component: {fileID: 766701483}
+  - component: {fileID: 766701482}
+  - component: {fileID: 766701481}
   m_Layer: 0
   m_Name: soundmanager
   m_TagString: Untagged
@@ -137,19 +137,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &877877669
+--- !u!114 &766701481
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877877668}
+  m_GameObject: {fileID: 766701480}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7f9b8c2d1e34567890123456789abcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PocketRoguelike.SoundManager
-  audioSource: {fileID: 877877670}
+  audioSource: {fileID: 766701482}
   volume: 1
   loop: 1
   playOnStart: 1
@@ -160,17 +160,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 09a76be057cd0d8408bba198979dffcf, type: 3}
   - {fileID: 8300000, guid: 3771cd4e9fc49f2429b1d470d9633633, type: 3}
   currentBgmIndex: 0
---- !u!82 &877877670
+--- !u!82 &766701482
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877877668}
+  m_GameObject: {fileID: 766701480}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: bc350aace2d332d4aaa93eb567f0da4f, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: bc350aace2d332d4aaa93eb567f0da4f, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -257,13 +257,13 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!4 &877877671
+--- !u!4 &766701483
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877877668}
+  m_GameObject: {fileID: 766701480}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -272,7 +272,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1877221951
+--- !u!1 &1025250982
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -280,9 +280,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1877221954}
-  - component: {fileID: 1877221953}
-  - component: {fileID: 1877221952}
+  - component: {fileID: 1025250985}
+  - component: {fileID: 1025250984}
+  - component: {fileID: 1025250983}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -290,21 +290,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1877221952
+--- !u!81 &1025250983
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877221951}
+  m_GameObject: {fileID: 1025250982}
   m_Enabled: 1
---- !u!20 &1877221953
+--- !u!20 &1025250984
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877221951}
+  m_GameObject: {fileID: 1025250982}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -349,13 +349,13 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &1877221954
+--- !u!4 &1025250985
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1877221951}
+  m_GameObject: {fileID: 1025250982}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
@@ -368,5 +368,5 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1877221954}
-  - {fileID: 877877671}
+  - {fileID: 1025250985}
+  - {fileID: 766701483}
