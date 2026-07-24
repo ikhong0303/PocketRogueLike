@@ -5,14 +5,8 @@ using UnityEngine;
 
 namespace PocketRoguelike.EditorTools
 {
-    [InitializeOnLoad]
     public static class CatSpriteBatchRenamer
     {
-        static CatSpriteBatchRenamer()
-        {
-            EditorApplication.delayCall += ExecuteBatchRename;
-        }
-
         [MenuItem("Tools/Execute Cat Sprites Batch Rename")]
         public static void ExecuteBatchRename()
         {
