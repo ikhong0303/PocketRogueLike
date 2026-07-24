@@ -38,6 +38,20 @@ namespace PocketRoguelike
             }
 
             PopulateStarterOptions();
+
+            // Default select Cat #1, Cat #2, Cat #3 as initial starters
+            if (GameManager.Instance != null && GameManager.Instance.CatDatabase != null)
+            {
+                var db = GameManager.Instance.CatDatabase;
+                CatDataSO c1 = db.GetByDexNo(1);
+                CatDataSO c2 = db.GetByDexNo(2);
+                CatDataSO c3 = db.GetByDexNo(3);
+
+                if (c1 != null && !selectedStarters.Contains(c1)) selectedStarters.Add(c1);
+                if (c2 != null && !selectedStarters.Contains(c2)) selectedStarters.Add(c2);
+                if (c3 != null && !selectedStarters.Contains(c3)) selectedStarters.Add(c3);
+            }
+
             UpdateBudgetUI();
         }
 

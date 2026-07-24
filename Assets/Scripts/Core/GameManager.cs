@@ -128,6 +128,10 @@ namespace PocketRoguelike
         {
             PartyManager.Instance.ClearParty();
 
+            if (s1 == null && catDatabase != null) s1 = catDatabase.GetByDexNo(1);
+            if (s2 == null && catDatabase != null) s2 = catDatabase.GetByDexNo(2);
+            if (s3 == null && catDatabase != null) s3 = catDatabase.GetByDexNo(3);
+
             if (s1 != null) PartyManager.Instance.AddCat(new CatInstance(s1, 5));
             if (s2 != null) PartyManager.Instance.AddCat(new CatInstance(s2, 5));
             if (s3 != null) PartyManager.Instance.AddCat(new CatInstance(s3, 5));
