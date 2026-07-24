@@ -9,14 +9,8 @@ using UnityEngine.UI;
 
 namespace PocketRoguelike.EditorTools
 {
-    [InitializeOnLoad]
     public static class MainGameSceneBuilder
     {
-        static MainGameSceneBuilder()
-        {
-            EditorApplication.delayCall += BuildMainGameScene;
-        }
-
         [MenuItem("Tools/Build MainGame Scene")]
         public static void BuildMainGameScene()
         {

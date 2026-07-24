@@ -6,15 +6,8 @@ using UnityEngine.SceneManagement;
 
 namespace PocketRoguelike.EditorTools
 {
-    [InitializeOnLoad]
     public static class SoundManagerAutoBuilder
     {
-        static SoundManagerAutoBuilder()
-        {
-            // Delay execution slightly to ensure AssetDatabase is fully initialized
-            EditorApplication.delayCall += BuildSoundManagerScene;
-        }
-
         [MenuItem("Tools/Build SoundManager Scene")]
         public static void BuildSoundManagerScene()
         {
