@@ -15,7 +15,7 @@ MonoBehaviour:
   dexNo: 26
   catName: Cat #26
   rarity: 0
-  sprite: {fileID: -444103975889571560, guid: 53fa89b5311f9394692fb47402636a0f, type: 3}
+  sprite: {fileID: -444103975889571560, guid: 6cc3bde26c68ef24a82480574b160a41, type: 3}
   baseHp: 132
   baseAtk: 25
   speed: 56
