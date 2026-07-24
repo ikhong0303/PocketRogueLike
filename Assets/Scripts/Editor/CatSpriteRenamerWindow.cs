@@ -75,7 +75,7 @@ namespace PocketRoguelike.EditorTools
         private void OnGUI()
         {
             GUILayout.Space(10);
-            EditorGUILayout.LabelLabel("🐱 Cat Sprite Renamer (100 Cats Batch Naming)", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("🐱 Cat Sprite Renamer (100 Cats Batch Naming)", EditorStyles.boldLabel);
             EditorGUILayout.HelpBox("100개의 고양이 스프라이트 이름을 1부터 100까지 배열로 지정하여 4장의 스프라이트 시트 내 서브 스프라이트 네이밍을 일괄 변경합니다.", MessageType.Info);
 
             GUILayout.Space(10);
