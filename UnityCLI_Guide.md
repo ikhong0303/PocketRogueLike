@@ -94,3 +94,24 @@ unity auth logout    # 로그아웃
   - `6000.3.18f1` (Platforms: Web)
   - `6000.0.59f2`
 - **프로젝트 상세 정보 검증**: `PocketRoguelike` (Unity `6000.3.18f1`, URP, 52개 패키지 확인 완료)
+
+---
+
+## 5. 2026-07-24 CLI 실행 검증
+
+공식 Unity CLI 문서의 설치·에디터 조회·프로젝트 조회 흐름을 이 프로젝트에서 실제로 실행해 확인했다.
+
+```powershell
+$unity = "$env:LOCALAPPDATA\Unity\bin\unity.exe"
+
+& $unity --version
+& $unity editors -i --format json
+& $unity projects info "C:\UnityProject\PocketRoguelike" --format json
+```
+
+- **CLI 버전**: `1.0.0-beta.2`
+- **프로젝트 에디터**: `6000.3.18f1` (`C:\Program Files\Unity\Hub\Editor\6000.3.18f1\Editor\Unity.exe`)
+- **프로젝트**: `PocketRoguelike`, URP, `StandaloneWindows64` 타겟
+- **설치된 추가 모듈**: Web
+
+CLI는 실험적 기능이므로 자동화에서는 `--format json`을 사용하고, 설치·업데이트 명령(`unity install`, `unity upgrade`, `unity install-modules`)은 에디터와 모듈을 변경하므로 실행 전에 필요한 버전과 모듈을 확인한다.
