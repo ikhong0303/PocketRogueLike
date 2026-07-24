@@ -22,7 +22,7 @@ namespace PocketRoguelike
         [SerializeField, Min(0)] private int ballCount;
         [SerializeField, Min(0)] private int potionCount;
         [SerializeField, Min(1)] private int maxPotionCount = 99;
-        [SerializeField, Range(0.01f, 1f)] private float potionHealRatio = 0.35f;
+        [SerializeField, Range(0.01f, 1f)] private float potionHealRatio = 0.50f;
 
         [Header("Victory Drop Rates")]
         [SerializeField, Range(0f, 1f)] private float monsterBallDropChance = 0.10f;

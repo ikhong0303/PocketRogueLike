@@ -35,7 +35,7 @@ namespace PocketRoguelike
             { "victory", ("승리!", "VICTORY!") },
             { "defeat", ("패배!", "DEFEAT!") },
             { "play_again", ("다시 하기", "PLAY AGAIN") },
-            { "battle_prompt", ("[SPACE]: 포켓볼 던지기  |  [P]: 파티 관리", "[SPACE]: Throw Poke Ball  |  [P]: Party Management") },
+            { "battle_prompt", ("[SPACE]: 포켓볼 던지기  |  [H]: 회복약 사용(50%)  |  [P]: 파티 관리", "[SPACE]: Throw Poke Ball  |  [H]: Use Potion (50%)  |  [P]: Party Management") },
             { "battle_start", ("전투 시작! 자동 전투를 준비하세요!", "Battle Started! Prepare for Auto Battle!") },
             { "attack_log", ("{0}의 {1}! {2}에게 {3:N0} 피해!", "{0} used {1}! {3:N0} damage to {2}!") },
             { "stats_line", ("체력 {0:N0}/{1:N0} | 공격력 {2:N0}", "HP {0:N0}/{1:N0} | ATK {2:N0}") },

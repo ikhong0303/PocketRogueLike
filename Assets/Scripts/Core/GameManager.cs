@@ -98,6 +98,7 @@ namespace PocketRoguelike
             bool isSpacePressed = false;
             bool isPPressed = false;
             bool isEscPressed = false;
+            bool isHPressed = false;
 
 #if ENABLE_INPUT_SYSTEM
             if (UnityEngine.InputSystem.Keyboard.current != null)
@@ -105,11 +106,13 @@ namespace PocketRoguelike
                 if (UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame) isSpacePressed = true;
                 if (UnityEngine.InputSystem.Keyboard.current.pKey.wasPressedThisFrame) isPPressed = true;
                 if (UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame) isEscPressed = true;
+                if (UnityEngine.InputSystem.Keyboard.current.hKey.wasPressedThisFrame) isHPressed = true;
             }
 #endif
             if (!isSpacePressed) { try { isSpacePressed = Input.GetKeyDown(KeyCode.Space); } catch { } }
             if (!isPPressed) { try { isPPressed = Input.GetKeyDown(KeyCode.P); } catch { } }
             if (!isEscPressed) { try { isEscPressed = Input.GetKeyDown(KeyCode.Escape); } catch { } }
+            if (!isHPressed) { try { isHPressed = Input.GetKeyDown(KeyCode.H); } catch { } }
 
             // Global Hotkeys based on System Spec 4.3 / 4.4
             if (currentState == GameState.StageBattle)
@@ -118,6 +121,11 @@ namespace PocketRoguelike
                 if (isSpacePressed)
                 {
                     TryStartCatch();
+                }
+                // [H] to use Potion on active cat (50% HP heal)
+                else if (isHPressed)
+                {
+                    TryUsePotion();
                 }
                 // [P] to open Party Management modal
                 else if (isPPressed)
@@ -252,6 +260,33 @@ namespace PocketRoguelike
                 ChangeState(GameState.StageBattle);
                 BattleManager.Instance.ResumeBattle();
             }
+        }
+
+        public bool TryUsePotion()
+        {
+            if (currentState != GameState.StageBattle) return false;
+
+            CatInstance activeCat = PartyManager.Instance.GetActiveCat();
+            if (activeCat == null || activeCat.IsFainted) return false;
+
+            if (CatchManager.Instance.PotionCount <= 0)
+            {
+                Debug.LogWarning("[GameManager] No Potions remaining.");
+                return false;
+            }
+
+            if (activeCat.CurrentHp >= activeCat.MaxHp)
+            {
+                Debug.Log("[GameManager] Active cat is already at full HP.");
+                return false;
+            }
+
+            bool success = CatchManager.Instance.UsePotion(activeCat);
+            if (success)
+            {
+                Debug.Log($"[GameManager] Used Potion on {activeCat.Data.catName}! Healed 50% HP to {activeCat.CurrentHp}/{activeCat.MaxHp}.");
+            }
+            return success;
         }
 
         public void HandleCatchResult(bool isSuccess, CatInstance cat)
