@@ -13,6 +13,7 @@ namespace PocketRoguelike
         [SerializeField] private AudioSource audioSource;
         [Range(0f, 1f)] [SerializeField] private float volume = 1f;
         [SerializeField] private bool loop = true;
+        [SerializeField] private bool playOnStart = true;
 
         [Header("BGM Tracks (5 Slots)")]
         [SerializeField] private AudioClip[] bgmClips = new AudioClip[5];
@@ -52,6 +53,14 @@ namespace PocketRoguelike
             InitAudioSource();
         }
 
+        private void Start()
+        {
+            if (playOnStart)
+            {
+                PlayBGM(currentBgmIndex);
+            }
+        }
+
         private void Reset()
         {
             InitAudioSource();
@@ -64,15 +73,21 @@ namespace PocketRoguelike
                 audioSource = GetComponent<AudioSource>();
             }
 
+            if (bgmClips == null || bgmClips.Length != 5)
+            {
+                System.Array.Resize(ref bgmClips, 5);
+            }
+
             if (audioSource != null)
             {
                 audioSource.volume = volume;
                 audioSource.loop = loop;
-            }
 
-            if (bgmClips == null || bgmClips.Length != 5)
-            {
-                System.Array.Resize(ref bgmClips, 5);
+                // Sync current clip to AudioSource field if empty
+                if (audioSource.clip == null && bgmClips != null && currentBgmIndex >= 0 && currentBgmIndex < bgmClips.Length)
+                {
+                    audioSource.clip = bgmClips[currentBgmIndex];
+                }
             }
         }
 
@@ -86,14 +101,25 @@ namespace PocketRoguelike
                     audioSource = gameObject.AddComponent<AudioSource>();
                 }
             }
-            audioSource.playOnAwake = false;
+
             audioSource.loop = loop;
             audioSource.volume = volume;
+
+            if (bgmClips != null && currentBgmIndex >= 0 && currentBgmIndex < bgmClips.Length && bgmClips[currentBgmIndex] != null)
+            {
+                audioSource.clip = bgmClips[currentBgmIndex];
+            }
         }
 
         /// <summary>
         /// Play BGM by index (0 ~ 4)
         /// </summary>
+        [ContextMenu("Play Current BGM")]
+        public void PlayCurrentBGM()
+        {
+            PlayBGM(currentBgmIndex);
+        }
+
         public void PlayBGM(int index)
         {
             if (bgmClips == null || bgmClips.Length == 0)
@@ -123,6 +149,16 @@ namespace PocketRoguelike
         }
 
         /// <summary>
+        /// Play Next BGM (Cycle 0~4)
+        /// </summary>
+        [ContextMenu("Play Next BGM")]
+        public void PlayNextBGM()
+        {
+            int nextIndex = (currentBgmIndex + 1) % bgmClips.Length;
+            PlayBGM(nextIndex);
+        }
+
+        /// <summary>
         /// Play BGM by clip name
         /// </summary>
         public void PlayBGMByName(string clipName)
@@ -144,6 +180,7 @@ namespace PocketRoguelike
         /// <summary>
         /// Stop current BGM
         /// </summary>
+        [ContextMenu("Stop BGM")]
         public void StopBGM()
         {
             if (audioSource != null && audioSource.isPlaying)
@@ -166,6 +203,10 @@ namespace PocketRoguelike
             if (index >= 0 && index < 5)
             {
                 bgmClips[index] = clip;
+                if (index == currentBgmIndex && audioSource != null)
+                {
+                    audioSource.clip = clip;
+                }
             }
         }
     }
