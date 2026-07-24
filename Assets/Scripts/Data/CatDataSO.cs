@@ -6,8 +6,10 @@ namespace PocketRoguelike
     public class CatDataSO : ScriptableObject
     {
         [Header("Identity")]
-        public int dexNo;             // 1 ~ 100
-        public string catName;        // e.g. "Cat #1"
+        public int dexNo;             // 1 ~ 300
+        public string catName;        // Legacy/default name
+        public string catNameKorean;
+        public string catNameEnglish;
         public CatRarity rarity;
 
         [Header("Visuals")]
@@ -18,13 +20,24 @@ namespace PocketRoguelike
         public int baseAtk = 20;
         public int speed = 50;        // Higher speed acts first in battle turn order
 
+        [Header("Encyclopedia Skills")]
+        public string skillNameKorean;
+        public string skillNameEnglish;
+        [TextArea(2, 4)] public string attackSkillsKorean;
+        [TextArea(2, 4)] public string defenseSkillKorean;
+        [TextArea(2, 4)] public string debuffSkillKorean;
+
         public int StarterCost => rarity.GetStarterCost();
 
         private void OnValidate()
         {
             if (dexNo < 1) dexNo = 1;
-            if (dexNo > 100) dexNo = 100;
+            if (dexNo > 300) dexNo = 300;
             if (string.IsNullOrEmpty(catName)) catName = $"Cat #{dexNo}";
+            if (string.IsNullOrEmpty(catNameEnglish)) catNameEnglish = catName;
+            if (string.IsNullOrEmpty(catNameKorean)) catNameKorean = $"고양이 #{dexNo}";
+            if (string.IsNullOrEmpty(skillNameKorean)) skillNameKorean = "기본 공격";
+            if (string.IsNullOrEmpty(skillNameEnglish)) skillNameEnglish = skillNameKorean;
         }
     }
 }

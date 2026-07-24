@@ -13,9 +13,17 @@ MonoBehaviour:
   m_Name: CatData_5
   m_EditorClassIdentifier: PocketRoguelike:CatDataSO
   dexNo: 5
-  catName: Cat #5
+  catName: "\uD669\uC18C \uACE0\uC591\uC774"
+  catNameKorean: "\uD669\uC18C \uACE0\uC591\uC774"
+  catNameEnglish: "Cat #5 (\uD669\uC18C \uACE0\uC591\uC774)"
   rarity: 0
   sprite: {fileID: -8811421364459280987, guid: aae5efd33267ed747a9b02fb3b8479da, type: 3}
-  baseHp: 90
-  baseAtk: 17
+  baseHp: 5800
+  baseAtk: 3900
   speed: 35
+  skillNameKorean: "\uCD08\uC18D\uACF5 \uB3CC\uC9C4 \uD5E4\uB529"
+  skillNameEnglish: "\uCD08\uC18D\uACF5 \uB3CC\uC9C4 \uD5E4\uB529"
+  attackSkillsKorean: "\uCD08\uC18D\uACF5 \uB3CC\uC9C4 \uD5E4\uB529, 3\uC5F0\uC18D
+    \uB9C8\uAD6C \uBC1B\uAE30"
+  defenseSkillKorean: "\uC21C\uAC04 \uB290\uB9AC\uAC8C \uD558\uAE30 \uBB34\uD6A8"
+  debuffSkillKorean: "\uC801 \uC9C4\uD615 \uB109\uBC31(\uBC00\uCE58 \uAE30) \uC720\uB3C4"

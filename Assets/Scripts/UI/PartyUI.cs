@@ -21,25 +21,23 @@ namespace PocketRoguelike
 
         private void OnEnable()
         {
-            if (PartyManager.Instance != null)
-            {
-                PartyManager.Instance.OnPartyUpdated += RefreshPartyUI;
-            }
+            if (PartyManager.Instance != null) PartyManager.Instance.OnPartyUpdated += RefreshPartyUI;
+            LanguageManager.OnLanguageChanged -= HandleLanguageChanged;
+            LanguageManager.OnLanguageChanged += HandleLanguageChanged;
             RefreshPartyUI();
         }
 
         private void OnDisable()
         {
-            if (PartyManager.Instance != null)
-            {
-                PartyManager.Instance.OnPartyUpdated -= RefreshPartyUI;
-            }
+            if (PartyManager.Instance != null) PartyManager.Instance.OnPartyUpdated -= RefreshPartyUI;
+            LanguageManager.OnLanguageChanged -= HandleLanguageChanged;
         }
+
+        private void HandleLanguageChanged(GameLanguage _) => RefreshPartyUI();
 
         public void RefreshPartyUI()
         {
             if (PartyManager.Instance == null) return;
-
             var party = PartyManager.Instance.Party;
             for (int i = 0; i < slots.Count; i++)
             {
@@ -48,18 +46,15 @@ namespace PocketRoguelike
                     CatInstance cat = party[i];
                     slots[i].container.SetActive(true);
                     if (slots[i].iconImage != null) slots[i].iconImage.sprite = cat.Data.sprite;
-                    if (slots[i].nameText != null) slots[i].nameText.text = cat.Data.catName;
-                    if (slots[i].levelText != null) slots[i].levelText.text = $"Lv.{cat.Level}";
+                    if (slots[i].nameText != null) slots[i].nameText.text = LanguageManager.CatName(cat.Data);
+                    if (slots[i].levelText != null) slots[i].levelText.text = LanguageManager.Format("level", cat.Level);
                     if (slots[i].hpSlider != null)
                     {
                         slots[i].hpSlider.maxValue = cat.MaxHp;
                         slots[i].hpSlider.value = cat.CurrentHp;
                     }
                 }
-                else
-                {
-                    slots[i].container.SetActive(false);
-                }
+                else slots[i].container.SetActive(false);
             }
         }
     }

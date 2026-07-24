@@ -1,31 +1,54 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace PocketRoguelike
 {
+    [Serializable]
+    public struct VictoryReward
+    {
+        public bool monsterBall;
+        public bool potion;
+        public bool HasAny => monsterBall || potion;
+    }
+
     public class CatchManager : MonoBehaviour
     {
         public static CatchManager Instance { get; private set; }
 
-        [Header("Catch Gauge Settings")]
-        [SerializeField] private float gaugeSpeed = 1.5f;       // Oscillations per second
-        [SerializeField] private float sweetSpotCenter = 0.5f;   // Center of green zone (0.0 ~ 1.0)
-        [SerializeField] private float sweetSpotWidth = 0.15f;   // Green zone width
+        [Header("Run Inventory")]
+        [SerializeField, Min(0)] private int startingBallCount = 5;
+        [SerializeField, Min(1)] private int maxBallCount = 99;
+        [SerializeField, Min(0)] private int ballCount;
+        [SerializeField, Min(0)] private int potionCount;
+        [SerializeField, Min(1)] private int maxPotionCount = 99;
+        [SerializeField, Range(0.01f, 1f)] private float potionHealRatio = 0.35f;
 
-        [Header("Runtime State")]
-        [SerializeField] private bool isGaugeActive = false;
-        [SerializeField] private float currentGaugeValue = 0f;  // 0.0 ~ 1.0
-        private float gaugeDirection = 1f;
+        [Header("Victory Drop Rates")]
+        [SerializeField, Range(0f, 1f)] private float monsterBallDropChance = 0.10f;
+        [SerializeField, Range(0f, 1f)] private float potionDropChance = 0.10f;
 
-        public bool IsGaugeActive => isGaugeActive;
-        public float CurrentGaugeValue => currentGaugeValue;
-        public float SweetSpotCenter => sweetSpotCenter;
-        public float SweetSpotWidth => sweetSpotWidth;
+        [Header("Capture Probability")]
+        [SerializeField, Range(0.01f, 0.99f)] private float fullHpShakeChance = 0.25f;
+        [SerializeField, Range(0.01f, 0.999f)] private float lowHpShakeChance = 0.985f;
+        [SerializeField, Range(0f, 0.1f)] private float rarityPenaltyPerTier = 0.025f;
+        [SerializeField, Min(0.05f)] private float shakeInterval = 0.4f;
 
-        public event Action<float> OnGaugeUpdated;
+        public int BallCount => ballCount;
+        public int PotionCount => potionCount;
+        public int StartingBallCount => startingBallCount;
+        public bool HasBalls => ballCount > 0;
+        public bool IsCaptureResolving { get; private set; }
+        public float LastShakeChance { get; private set; }
+
+        public event Action<int> OnBallCountChanged;
+        public event Action<int> OnPotionCountChanged;
+        public event Action<CatInstance> OnCaptureStarted;
+        public event Action<int, bool> OnCaptureShake;
         public event Action<bool, CatInstance> OnCatchResult;
 
         private CatInstance targetEnemy;
+        private Coroutine captureCoroutine;
 
         private void Awake()
         {
@@ -40,90 +63,112 @@ namespace PocketRoguelike
             }
         }
 
-        private void Update()
+        public void InitRunInventory()
         {
-            if (!isGaugeActive) return;
-
-            // Oscillate gauge value between 0 and 1
-            currentGaugeValue += gaugeDirection * gaugeSpeed * Time.deltaTime;
-            if (currentGaugeValue >= 1f)
-            {
-                currentGaugeValue = 1f;
-                gaugeDirection = -1f;
-            }
-            else if (currentGaugeValue <= 0f)
-            {
-                currentGaugeValue = 0f;
-                gaugeDirection = 1f;
-            }
-
-            OnGaugeUpdated?.Invoke(currentGaugeValue);
-
-            // Detect Spacebar press to execute Catch Throw!
-            bool isSpacePressed = false;
-
-#if ENABLE_INPUT_SYSTEM
-            if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame)
-            {
-                isSpacePressed = true;
-            }
-#endif
-            if (!isSpacePressed)
-            {
-                try
-                {
-                    isSpacePressed = Input.GetKeyDown(KeyCode.Space);
-                }
-                catch { }
-            }
-
-            if (isSpacePressed)
-            {
-                ExecuteCatchThrow();
-            }
+            ballCount = Mathf.Clamp(startingBallCount, 0, maxBallCount);
+            potionCount = 0;
+            OnBallCountChanged?.Invoke(ballCount);
+            OnPotionCountChanged?.Invoke(potionCount);
+            Debug.Log($"[CatchManager] Run inventory initialized: {ballCount} Monster Balls, {potionCount} Potions.");
         }
 
-        public void StartCatchProcess(CatInstance enemy)
-        {
-            if (enemy == null || enemy.IsFainted)
-            {
-                Debug.LogWarning("[CatchManager] Cannot catch a null or fainted cat!");
-                return;
-            }
+        public void InitRunBalls() => InitRunInventory();
 
+        public void AddBalls(int amount)
+        {
+            if (amount <= 0) return;
+            ballCount = Mathf.Clamp(ballCount + amount, 0, maxBallCount);
+            OnBallCountChanged?.Invoke(ballCount);
+        }
+
+        public void AddPotions(int amount)
+        {
+            if (amount <= 0) return;
+            potionCount = Mathf.Clamp(potionCount + amount, 0, maxPotionCount);
+            OnPotionCountChanged?.Invoke(potionCount);
+        }
+
+        public bool UsePotion(CatInstance target)
+        {
+            if (potionCount <= 0 || target == null || target.IsFainted || target.CurrentHp >= target.MaxHp) return false;
+            potionCount--;
+            target.Heal(Mathf.Max(1, Mathf.RoundToInt(target.MaxHp * potionHealRatio)));
+            OnPotionCountChanged?.Invoke(potionCount);
+            return true;
+        }
+
+        public VictoryReward RollVictoryDrops()
+        {
+            VictoryReward reward = new VictoryReward
+            {
+                monsterBall = UnityEngine.Random.value < monsterBallDropChance,
+                potion = UnityEngine.Random.value < potionDropChance
+            };
+            if (reward.monsterBall) AddBalls(1);
+            if (reward.potion) AddPotions(1);
+            Debug.Log($"[Rewards] Victory drops - Monster Ball: {reward.monsterBall}, Potion: {reward.potion}");
+            return reward;
+        }
+
+        public bool TryThrowBall(CatInstance enemy)
+        {
+            if (IsCaptureResolving || enemy == null || enemy.IsFainted || !HasBalls) return false;
+            ballCount--;
+            OnBallCountChanged?.Invoke(ballCount);
             targetEnemy = enemy;
-            currentGaugeValue = 0f;
-            gaugeDirection = 1f;
-            isGaugeActive = true;
-            Debug.Log($"[CatchManager] Catch Timing Gauge Started for {enemy.Data.catName}! Press SPACE to throw ball!");
+            IsCaptureResolving = true;
+            LastShakeChance = CalculateShakeChance(enemy);
+            OnCaptureStarted?.Invoke(enemy);
+            if (captureCoroutine != null) StopCoroutine(captureCoroutine);
+            captureCoroutine = StartCoroutine(ResolveCapture(enemy, LastShakeChance));
+            Debug.Log($"[CatchManager] Threw 1 ball at {enemy.Data.catName}. Remaining: {ballCount}, per-shake chance: {LastShakeChance:P1}");
+            return true;
         }
 
-        public void StopGauge()
+        public float CalculateShakeChance(CatInstance enemy)
         {
-            isGaugeActive = false;
+            if (enemy == null) return 0f;
+            float missingHp = 1f - Mathf.Clamp01(enemy.HpRatio);
+            float hpCurve = Mathf.Pow(missingHp, 0.55f);
+            float hpChance = Mathf.Lerp(fullHpShakeChance, lowHpShakeChance, hpCurve);
+            float rarityPenalty = (int)enemy.Data.rarity * rarityPenaltyPerTier;
+            return Mathf.Clamp(hpChance - rarityPenalty, 0.05f, 0.995f);
         }
 
-        public void ExecuteCatchThrow()
+        private IEnumerator ResolveCapture(CatInstance expectedTarget, float shakeChance)
         {
-            if (!isGaugeActive) return;
+            for (int shake = 1; shake <= 3; shake++)
+            {
+                yield return new WaitForSeconds(shakeInterval);
+                if (!IsCaptureResolving || targetEnemy != expectedTarget) yield break;
+                bool passed = UnityEngine.Random.value < shakeChance;
+                OnCaptureShake?.Invoke(shake, passed);
+                Debug.Log($"[CatchManager] Shake {shake}/3: {(passed ? "TRUE" : "FALSE")}");
+                if (!passed)
+                {
+                    FinishCapture(false, expectedTarget);
+                    yield break;
+                }
+            }
+            FinishCapture(true, expectedTarget);
+        }
 
-            isGaugeActive = false;
+        private void FinishCapture(bool success, CatInstance expectedTarget)
+        {
+            if (!IsCaptureResolving || targetEnemy != expectedTarget) return;
+            IsCaptureResolving = false;
+            targetEnemy = null;
+            captureCoroutine = null;
+            Debug.Log($"[CatchManager] Capture result: {(success ? "SUCCESS" : "FAILED")}");
+            OnCatchResult?.Invoke(success, expectedTarget);
+        }
 
-            // Calculate timing accuracy (0.0 to 1.0)
-            float dist = Mathf.Abs(currentGaugeValue - sweetSpotCenter);
-            float accuracy = Mathf.Clamp01(1f - (dist / (sweetSpotWidth * 2f)));
-
-            // Calculate catch probability based on enemy HP% + timing accuracy + rarity factor
-            float hpBonus = (1f - targetEnemy.HpRatio) * 0.5f; // Lower HP = Higher catch chance
-            float timingBonus = accuracy * 0.4f;
-            float rarityPenalty = ((int)targetEnemy.Data.rarity) * 0.05f;
-
-            float finalChance = Mathf.Clamp(hpBonus + timingBonus + 0.15f - rarityPenalty, 0.1f, 0.95f);
-
-            bool isSuccess = UnityEngine.Random.value <= finalChance;
-            Debug.Log($"[CatchManager] Throw Accuracy: {accuracy:P0}, HP Bonus: {hpBonus:P0}, Final Chance: {finalChance:P0} -> Result: {(isSuccess ? "SUCCESS" : "FAILED")}");
-
-            OnCatchResult?.Invoke(isSuccess, targetEnemy);
+        public void CancelCapture()
+        {
+            if (captureCoroutine != null) StopCoroutine(captureCoroutine);
+            captureCoroutine = null;
+            targetEnemy = null;
+            IsCaptureResolving = false;
         }
     }
 }

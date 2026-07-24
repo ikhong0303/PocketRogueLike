@@ -13,9 +13,17 @@ MonoBehaviour:
   m_Name: CatData_31
   m_EditorClassIdentifier: PocketRoguelike:CatDataSO
   dexNo: 31
-  catName: Cat #31
+  catName: "\uAF2C\uB9C8 \uD669\uC18C \uACE0\uC591\uC774"
+  catNameKorean: "\uAF2C\uB9C8 \uD669\uC18C \uACE0\uC591\uC774"
+  catNameEnglish: "Cat #31 (\uAF2C\uB9C8 \uD669\uC18C \uACE0\uC591\uC774)"
   rarity: 1
-  sprite: {fileID: 4825622792079744070, guid: 53fa89b5311f9394692fb47402636a0f, type: 3}
-  baseHp: 142
-  baseAtk: 27
+  sprite: {fileID: 4825622792079744070, guid: 6cc3bde26c68ef24a82480574b160a41, type: 3}
+  baseHp: 50500
+  baseAtk: 49000
   speed: 61
+  skillNameKorean: "\uAF2C\uB9C8 \uCD08\uC18D\uACF5 \uB3CC\uC9C4"
+  skillNameEnglish: "\uAF2C\uB9C8 \uCD08\uC18D\uACF5 \uB3CC\uC9C4"
+  attackSkillsKorean: "\uAF2C\uB9C8 \uCD08\uC18D\uACF5 \uB3CC\uC9C4, \uAF2C\uB9C8
+    \uD5E4\uB529 \uBC15\uCE58\uAE30"
+  defenseSkillKorean: "\uB290\uB9AC\uAC8C \uD558\uAE30 \uBB34\uD6A8\uD654"
+  debuffSkillKorean: "\uC801 \uB109\uBC31 \uC720\uB3C4 \uB514\uBC84\uD504"

@@ -44,8 +44,8 @@ namespace PocketRoguelike
         {
             System.Random rng = seed == 0 ? new System.Random() : new System.Random(seed);
             
-            // Random sequence of 100 dex numbers from 1..100 sorted in ascending order for stage curve
-            List<int> available = Enumerable.Range(1, 100).ToList();
+            // Sample 100 encounters from all 300 cats, sorted by dex for a rising difficulty curve.
+            List<int> available = Enumerable.Range(1, 300).ToList();
             backboneDexList = available.OrderBy(_ => rng.Next()).Take(100).OrderBy(dex => dex).ToList();
         }
 

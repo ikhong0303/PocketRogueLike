@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b76790ad4340d89e8d1996fea2d605, type: 3}
+  m_Name: CatData_151
+  m_EditorClassIdentifier: Assembly-CSharp::PocketRoguelike.CatDataSO
+  dexNo: 151
+  catName: "\uACE0\uC591\uC774 \uC544\uC774\uC2A4"
+  catNameKorean: "\uACE0\uC591\uC774 \uC544\uC774\uC2A4"
+  catNameEnglish: "Cat #151 (\uACE0\uC591\uC774 \uC544\uC774\uC2A4)"
+  rarity: 4
+  sprite: {fileID: -4670202313840344166, guid: bd7b27286fdd6c148b746db129a0fe65, type: 3}
+  baseHp: 615000
+  baseAtk: 610000
+  speed: 41
+  skillNameKorean: "\uBE68\uAC04 \uC801 100% \uD655\uC815 \uC815\uC9C0"
+  skillNameEnglish: "\uBE68\uAC04 \uC801 100% \uD655\uC815 \uC815\uC9C0"
+  attackSkillsKorean: "\uBE68\uAC04 \uC801 100% \uD655\uC815 \uC815\uC9C0, \uC544\uC774\uC2A4
+    \uBE14\uB77C\uC2A4\uD2B8"
+  defenseSkillKorean: "\uC815\uC9C0 \uBB34\uD6A8 \uD328\uC2DC\uBE0C"
+  debuffSkillKorean: "\uBE68\uAC04 \uC801 100% \uD655\uC815 \uC815\uC9C0"

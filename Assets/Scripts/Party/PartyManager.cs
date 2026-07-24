@@ -77,6 +77,25 @@ namespace PocketRoguelike
             return true;
         }
 
+        public bool SetActiveCat(int index)
+        {
+            if (index < 0 || index >= party.Count || party[index] == null || party[index].IsFainted)
+            {
+                return false;
+            }
+
+            CatInstance selected = party[index];
+            if (index > 0)
+            {
+                party[index] = party[0];
+                party[0] = selected;
+            }
+
+            OnPartyUpdated?.Invoke();
+            OnActiveCatChanged?.Invoke(selected);
+            return true;
+        }
+
         public void FullHealAll()
         {
             foreach (var cat in party)

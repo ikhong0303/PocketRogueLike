@@ -4,12 +4,12 @@ namespace PocketRoguelike
 {
     public enum CatRarity
     {
-        Basic = 0,   // 1~30
-        EX = 1,      // 31~50
-        Rare = 2,    // 51~70
-        Unique = 3,  // 71~85
-        Epic = 4,    // 86~95
-        Legend = 5   // 96~100
+        Basic = 0,   // 1~9
+        EX = 1,      // 10~50
+        Rare = 2,    // 51~100
+        Unique = 3,  // 101~150 (Super Rare)
+        Epic = 4,    // 151~270 (Ultra Super Rare)
+        Legend = 5   // 271~300 (Legend Rare)
     }
 
     public static class CatRarityExtensions
