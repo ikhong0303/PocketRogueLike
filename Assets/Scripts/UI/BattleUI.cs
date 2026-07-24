@@ -29,13 +29,40 @@ namespace PocketRoguelike
         [SerializeField] private TMP_Text battleLogText;
         [SerializeField] private TMP_Text actionPromptText;
 
+        private void Awake()
+        {
+            EnsureUIComponents();
+        }
+
         private void OnEnable()
         {
+            EnsureUIComponents();
             if (BattleManager.Instance != null)
             {
                 BattleManager.Instance.OnBattleStarted += UpdateBattleView;
                 BattleManager.Instance.OnAttackExecuted += OnAttackExecuted;
+                if (BattleManager.Instance.IsBattleActive)
+                {
+                    UpdateBattleView(BattleManager.Instance.PlayerCat, BattleManager.Instance.EnemyCat);
+                }
             }
+        }
+
+        private void EnsureUIComponents()
+        {
+            if (stageText == null) stageText = transform.Find("TopBar/StageText")?.GetComponent<TMP_Text>();
+            if (bossTagText == null) bossTagText = transform.Find("TopBar/BossTagText")?.GetComponent<TMP_Text>();
+            if (playerCatImage == null) playerCatImage = transform.Find("PlayerView/PlayerCatSprite")?.GetComponent<Image>();
+            if (playerCatNameText == null) playerCatNameText = transform.Find("PlayerView/PlayerNameText")?.GetComponent<TMP_Text>();
+            if (playerCatLevelText == null) playerCatLevelText = transform.Find("PlayerView/PlayerLevelText")?.GetComponent<TMP_Text>();
+            if (playerHpSlider == null) playerHpSlider = transform.Find("PlayerView/PlayerHPSlider")?.GetComponent<Slider>();
+            if (enemyCatImage == null) enemyCatImage = transform.Find("EnemyView/EnemyCatSprite")?.GetComponent<Image>();
+            if (enemyCatNameText == null) enemyCatNameText = transform.Find("EnemyView/EnemyNameText")?.GetComponent<TMP_Text>();
+            if (enemyCatLevelText == null) enemyCatLevelText = transform.Find("EnemyView/EnemyLevelText")?.GetComponent<TMP_Text>();
+            if (enemyRarityText == null) enemyRarityText = transform.Find("EnemyView/EnemyRarityText")?.GetComponent<TMP_Text>();
+            if (enemyHpSlider == null) enemyHpSlider = transform.Find("EnemyView/EnemyHPSlider")?.GetComponent<Slider>();
+            if (battleLogText == null) battleLogText = transform.Find("BottomPanel/BattleLogText")?.GetComponent<TMP_Text>();
+            if (actionPromptText == null) actionPromptText = transform.Find("BottomPanel/ActionPromptText")?.GetComponent<TMP_Text>();
         }
 
         private void OnDisable()

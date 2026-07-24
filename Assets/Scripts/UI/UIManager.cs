@@ -25,6 +25,20 @@ namespace PocketRoguelike
             {
                 Destroy(gameObject);
             }
+            EnsurePanels();
+        }
+
+        private void EnsurePanels()
+        {
+            Canvas canvas = FindObjectOfType<Canvas>();
+            if (canvas == null) return;
+
+            if (starterSelectPanel == null) starterSelectPanel = canvas.transform.Find("StarterSelectPanel")?.gameObject;
+            if (battlePanel == null) battlePanel = canvas.transform.Find("BattlePanel")?.gameObject;
+            if (catchTimingPanel == null) catchTimingPanel = canvas.transform.Find("CatchTimingPanel")?.gameObject;
+            if (partyPanel == null) partyPanel = canvas.transform.Find("PartyPanel")?.gameObject;
+            if (partyManageModalPanel == null) partyManageModalPanel = canvas.transform.Find("PartyManageModalPanel")?.gameObject;
+            if (resultPanel == null) resultPanel = canvas.transform.Find("ResultPanel")?.gameObject;
         }
 
         private void OnEnable()
