@@ -174,25 +174,27 @@ namespace PocketRoguelike.EditorTools
             SetField(battleUIComponent, "captureFeedbackText", captureFeedbackTxt);
 
 
-            // --- Panel 3: PartyPanel (Top 6 Slots Bar) ---
+            // --- Panel 3: PartyPanel (Top-Left Vertical 6 Slots Bar: Top to Bottom Alignment) ---
             GameObject partyPanel = CreateUIObject("PartyPanel", canvasGO.transform);
-            SetRect(partyPanel.GetComponent<RectTransform>(), 0.02f, 0.85f, 0.5f, 0.98f);
+            SetRect(partyPanel.GetComponent<RectTransform>(), 0.01f, 0.32f, 0.22f, 0.98f);
             PartyUI partyUIComponent = partyPanel.AddComponent<PartyUI>();
             List<PartyUI.PartySlotUI> partySlots = new List<PartyUI.PartySlotUI>(6);
             for (int i = 0; i < 6; i++)
             {
+                float maxY = 1f - (i * (1f / 6f));
+                float minY = 1f - ((i + 1) * (1f / 6f));
                 GameObject slot = CreateUIObject($"PartySlot_{i + 1}", partyPanel.transform);
-                SetRect(slot.GetComponent<RectTransform>(), i / 6f, 0f, (i + 1) / 6f, 1f);
+                SetRect(slot.GetComponent<RectTransform>(), 0f, minY, 1f, maxY);
                 Image slotBg = slot.AddComponent<Image>();
                 slotBg.color = new Color(0.04f, 0.06f, 0.1f, 0.9f);
                 Image icon = CreateUIImage("Icon", slot.transform);
-                SetRect(icon.GetComponent<RectTransform>(), 0.05f, 0.24f, 0.36f, 0.9f);
-                TMP_Text name = CreateTMPText("Name", slot.transform, "Cat", 18, TextAlignmentOptions.Left);
-                SetRect(name.GetComponent<RectTransform>(), 0.4f, 0.62f, 0.96f, 0.92f);
-                TMP_Text level = CreateTMPText("Level", slot.transform, "Lv.5", 15, TextAlignmentOptions.Left);
-                SetRect(level.GetComponent<RectTransform>(), 0.4f, 0.36f, 0.96f, 0.62f);
+                SetRect(icon.GetComponent<RectTransform>(), 0.03f, 0.08f, 0.35f, 0.92f);
+                TMP_Text name = CreateTMPText("Name", slot.transform, "Cat", 14, TextAlignmentOptions.Left);
+                SetRect(name.GetComponent<RectTransform>(), 0.38f, 0.52f, 0.97f, 0.95f);
+                TMP_Text level = CreateTMPText("Level", slot.transform, "Lv.5", 12, TextAlignmentOptions.Left);
+                SetRect(level.GetComponent<RectTransform>(), 0.38f, 0.1f, 0.62f, 0.5f);
                 Slider hp = CreateUISlider("HP", slot.transform, Color.green);
-                SetRect(hp.GetComponent<RectTransform>(), 0.4f, 0.1f, 0.96f, 0.27f);
+                SetRect(hp.GetComponent<RectTransform>(), 0.64f, 0.15f, 0.97f, 0.45f);
                 partySlots.Add(new PartyUI.PartySlotUI { container = slot, iconImage = icon, nameText = name, levelText = level, hpSlider = hp });
             }
             SetField(partyUIComponent, "slots", partySlots);

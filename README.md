@@ -157,6 +157,7 @@
 
 * **[`BattleUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/BattleUI.cs)**: 플레이어/적 스탠딩 스프라이트, 체력바, 전투 로그 텍스트 애니메이션 및 스페이스바 포획 / H 키 회복약 안내 UI.
 * **[`StarterSelectUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/StarterSelectUI.cs)**: 예산 10점 제한 기반 6개 스타팅 카드의 자가 생성(Self-Building) 그리드 패널.
+* **[`PartyUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/PartyUI.cs)**: 전투 화면 좌측 상단 6개 파티 슬롯 수직(위에서 아래로) 정렬 패널.
 * **[`PartyManageModalUI.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/UI/PartyManageModalUI.cs)**:
   - 6마리 슬롯 교체/방출 및 **[부활] (REVIVE)** 버튼 지원.
   - 보유 중인 기력의 조각 개수 실시간 표시 및 쓰러진 냥코 HP 50% 부활 처리.
