@@ -47,23 +47,39 @@ namespace PocketRoguelike
 
         private void Update()
         {
+            bool isSpacePressed = false;
+            bool isPPressed = false;
+            bool isEscPressed = false;
+
+#if ENABLE_INPUT_SYSTEM
+            if (UnityEngine.InputSystem.Keyboard.current != null)
+            {
+                if (UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame) isSpacePressed = true;
+                if (UnityEngine.InputSystem.Keyboard.current.pKey.wasPressedThisFrame) isPPressed = true;
+                if (UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame) isEscPressed = true;
+            }
+#endif
+            if (!isSpacePressed) { try { isSpacePressed = Input.GetKeyDown(KeyCode.Space); } catch { } }
+            if (!isPPressed) { try { isPPressed = Input.GetKeyDown(KeyCode.P); } catch { } }
+            if (!isEscPressed) { try { isEscPressed = Input.GetKeyDown(KeyCode.Escape); } catch { } }
+
             // Global Hotkeys based on System Spec 4.3 / 4.4
             if (currentState == GameState.StageBattle)
             {
                 // [SPACE] to start Catch Process
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (isSpacePressed)
                 {
                     TryStartCatch();
                 }
                 // [P] to open Party Management modal
-                else if (Input.GetKeyDown(KeyCode.P))
+                else if (isPPressed)
                 {
                     OpenPartyManagement();
                 }
             }
             else if (currentState == GameState.PartyManage)
             {
-                if (Input.GetKeyDown(KeyCode.Escape))
+                if (isEscPressed)
                 {
                     ClosePartyManagement();
                 }

@@ -60,7 +60,24 @@ namespace PocketRoguelike
             OnGaugeUpdated?.Invoke(currentGaugeValue);
 
             // Detect Spacebar press to execute Catch Throw!
-            if (Input.GetKeyDown(KeyCode.Space))
+            bool isSpacePressed = false;
+
+#if ENABLE_INPUT_SYSTEM
+            if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                isSpacePressed = true;
+            }
+#endif
+            if (!isSpacePressed)
+            {
+                try
+                {
+                    isSpacePressed = Input.GetKeyDown(KeyCode.Space);
+                }
+                catch { }
+            }
+
+            if (isSpacePressed)
             {
                 ExecuteCatchThrow();
             }
