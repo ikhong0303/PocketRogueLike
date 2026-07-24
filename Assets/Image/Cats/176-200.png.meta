@@ -66,9 +66,6 @@ TextureImporter:
       213: -8960209091305864181
     second: cat_196
   - first:
-      213: -1506041304878951928
-    second: 176-200_21
-  - first:
       213: 2456704570066477019
     second: cat_197
   - first:
@@ -741,7 +738,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 65dd6df3f7794ed4c87082830a77402e
+    spriteID: b8ced6de0f6404e4eb837423f2d2ebd3
     internalID: 0
     vertices: []
     indices: 

@@ -18,17 +18,11 @@ TextureImporter:
       213: 5066809599146233960
     second: cat_155
   - first:
-      213: 9121703683038685721
-    second: 151-175_5
-  - first:
       213: -3270212608193303573
     second: cat_156
   - first:
       213: 8713776825211617749
     second: cat_157
-  - first:
-      213: 1369229936351563209
-    second: 151-175_8
   - first:
       213: 1568492534654552127
     second: cat_158
@@ -38,12 +32,6 @@ TextureImporter:
   - first:
       213: 6714762561733269964
     second: cat_160
-  - first:
-      213: -7172982275484903958
-    second: 151-175_12
-  - first:
-      213: -2043413541532550329
-    second: 151-175_13
   - first:
       213: 3041529929434178505
     second: cat_161
@@ -72,26 +60,8 @@ TextureImporter:
       213: 4673985618794582713
     second: cat_169
   - first:
-      213: 1677091404874563545
-    second: 151-175_23
-  - first:
-      213: 5539496745147422281
-    second: 151-175_24
-  - first:
       213: 6631820049623708534
     second: cat_170
-  - first:
-      213: -4485093366644394016
-    second: 151-175_26
-  - first:
-      213: 6929663938978965932
-    second: 151-175_27
-  - first:
-      213: -5219543311702651066
-    second: 151-175_28
-  - first:
-      213: 8628500178410947079
-    second: 151-175_29
   - first:
       213: -5156280522752947151
     second: cat_171
@@ -768,7 +738,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 306ec1b478f350f44b60f594ac87847d
+    spriteID: b8ced6de0f6404e4eb837423f2d2ebd3
     internalID: 0
     vertices: []
     indices: 
