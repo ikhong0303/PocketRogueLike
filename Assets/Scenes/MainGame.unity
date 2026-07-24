@@ -13052,11 +13052,14 @@ MonoBehaviour:
   loop: 1
   playOnStart: 1
   bgmClips:
+  - {fileID: 8300000, guid: bc350aace2d332d4aaa93eb567f0da4f, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
+  attackSfxClip: {fileID: 8300000, guid: 7183e587a279e044f9756d5d8d9e476f, type: 3}
+  hurtSfxClip: {fileID: 8300000, guid: 09a76be057cd0d8408bba198979dffcf, type: 3}
+  sfxVolume: 1
   currentBgmIndex: 0
 --- !u!82 &1504671626
 AudioSource:
@@ -13069,8 +13072,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_Resource: {fileID: 8300000, guid: bc350aace2d332d4aaa93eb567f0da4f, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1

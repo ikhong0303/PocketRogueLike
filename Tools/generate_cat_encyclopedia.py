@@ -5,8 +5,9 @@ from pathlib import Path
 import pdfplumber
 
 ROOT = Path(__file__).resolve().parents[1]
-PDF_PATH = ROOT / "시스템기획서" / "냥코대전쟁 유닛 300종 스탯 & 스킬 도감.pdf"
+PDF_PATH = next(path for path in ROOT.rglob("*.pdf") if "300" in path.name)
 OUTPUT_PATH = ROOT / "Assets" / "Scripts" / "Data" / "CatEncyclopediaTable.cs"
+ATTACK_BALANCE_DIVISOR = 3
 
 def clean(value: str | None) -> str:
     return re.sub(r"\s+", " ", value or "").strip()
@@ -44,7 +45,7 @@ for row in raw_records:
         "id": int(clean(row[0])),
         "name": clean(row[1]),
         "hp": number(row[2]),
-        "atk": number(row[3]),
+        "atk": max(1, number(row[3]) // ATTACK_BALANCE_DIVISOR),
         "primary": attack.split(",", 1)[0].strip(),
         "attack": attack,
         "defense": clean(row[5]),
@@ -56,6 +57,8 @@ if ids != list(range(1, 301)):
     raise ValueError(f"Expected consecutive IDs 1..300, got {ids}")
 if any(int(records[index]["hp"]) < int(records[index - 1]["hp"]) for index in range(1, len(records))):
     raise ValueError("HP values must be monotonically non-decreasing after continuation rows are merged")
+if any(not re.search(r"[가-힣]", str(record["name"])) for record in records):
+    raise ValueError("Korean PDF extraction is corrupted; refusing to overwrite the encyclopedia table")
 
 lines = [
     "using System.Collections.Generic;",
@@ -88,6 +91,8 @@ lines = [
     "",
     "    public static class CatEncyclopediaTable",
     "    {",
+    f"        public const int AttackBalanceDivisor = {ATTACK_BALANCE_DIVISOR};",
+    "",
     "        private static readonly CatEncyclopediaEntry[] AllEntries =",
     "        {",
 ]

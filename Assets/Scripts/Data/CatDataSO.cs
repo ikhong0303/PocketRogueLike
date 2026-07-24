@@ -6,7 +6,7 @@ namespace PocketRoguelike
     public class CatDataSO : ScriptableObject
     {
         [Header("Identity")]
-        public int dexNo;             // 1 ~ 300
+        public int dexNo;             // 0 = database dummy, 1 ~ 300 = playable cats
         public string catName;        // Legacy/default name
         public string catNameKorean;
         public string catNameEnglish;
@@ -31,7 +31,7 @@ namespace PocketRoguelike
 
         private void OnValidate()
         {
-            if (dexNo < 1) dexNo = 1;
+            if (dexNo < 0) dexNo = 0;
             if (dexNo > 300) dexNo = 300;
             if (string.IsNullOrEmpty(catName)) catName = $"Cat #{dexNo}";
             if (string.IsNullOrEmpty(catNameEnglish)) catNameEnglish = catName;

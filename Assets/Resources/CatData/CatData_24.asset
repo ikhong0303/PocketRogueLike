@@ -17,9 +17,9 @@ MonoBehaviour:
   catNameKorean: "\uACE0\uC591\uC774 \uBB34\uD2B8"
   catNameEnglish: "Cat #24 (\uACE0\uC591\uC774 \uBB34\uD2B8)"
   rarity: 1
-  sprite: {fileID: -1506921498954208379, guid: aae5efd33267ed747a9b02fb3b8479da, type: 3}
+  sprite: {fileID: -1947576052360310526, guid: aae5efd33267ed747a9b02fb3b8479da, type: 3}
   baseHp: 39000
-  baseAtk: 38500
+  baseAtk: 12833
   speed: 54
   skillNameKorean: "\uAC01\uC131 \uD3ED\uD654 \uC77C\uACA9"
   skillNameEnglish: "\uAC01\uC131 \uD3ED\uD654 \uC77C\uACA9"

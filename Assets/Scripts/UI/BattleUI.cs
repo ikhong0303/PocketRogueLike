@@ -338,6 +338,11 @@ namespace PocketRoguelike
             RectTransform attacker = attackerImage != null ? attackerImage.rectTransform : null;
             RectTransform defender = defenderImage != null ? defenderImage.rectTransform : null;
 
+            SoundManager.Instance?.PlayAttackSfx();
+
+            if (attacker != null && lastAttacker?.Data != null)
+                StartCoroutine(ShowSkillCallout(attacker, LanguageManager.SkillName(lastAttacker.Data), playerWasHit));
+
             if (attacker != null && defender != null)
             {
                 Vector3 start = attacker.position;
@@ -351,6 +356,7 @@ namespace PocketRoguelike
                 attacker.SetSiblingIndex(Mathf.Min(siblingIndex, attacker.parent.childCount - 1));
             }
 
+            SoundManager.Instance?.PlayHurtSfx();
             yield return AnimateHpDrain(defenderCat, hpSlider, hpLabel);
             if (defenderCat.IsFainted && defender != null)
                 yield return SquashFaintedSprite(defender);
@@ -404,6 +410,43 @@ namespace PocketRoguelike
                 yield return null;
             }
             rect.position = to;
+        }
+
+        private IEnumerator ShowSkillCallout(RectTransform attacker, string skillName, bool enemyAttack)
+        {
+            if (attacker == null || string.IsNullOrWhiteSpace(skillName)) yield break;
+
+            GameObject calloutObject = new GameObject("SkillCalloutText", typeof(RectTransform));
+            calloutObject.transform.SetParent(transform, false);
+            RectTransform rect = calloutObject.GetComponent<RectTransform>();
+            rect.sizeDelta = new Vector2(520f, 100f);
+            rect.position = attacker.position + Vector3.up * 105f;
+
+            TextMeshProUGUI label = calloutObject.AddComponent<TextMeshProUGUI>();
+            label.text = $"{skillName}!";
+            label.alignment = TextAlignmentOptions.Center;
+            label.fontSize = 38f;
+            label.fontStyle = FontStyles.Bold;
+            label.color = enemyAttack ? new Color(1f, 0.4f, 0.35f) : new Color(0.35f, 0.9f, 1f);
+            label.outlineWidth = 0.3f;
+            label.outlineColor = Color.black;
+            if (battleLogText != null && battleLogText.font != null) label.font = battleLogText.font;
+
+            CanvasGroup group = calloutObject.AddComponent<CanvasGroup>();
+            Destroy(calloutObject, floatingTextDuration + 0.25f);
+            Vector3 start = rect.position;
+            Vector3 end = start + Vector3.up * 55f;
+            float elapsed = 0f;
+            while (elapsed < floatingTextDuration)
+            {
+                if (calloutObject == null || rect == null || group == null) yield break;
+                elapsed += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsed / floatingTextDuration);
+                rect.position = Vector3.Lerp(start, end, t);
+                group.alpha = t < 0.65f ? 1f : 1f - Mathf.InverseLerp(0.65f, 1f, t);
+                yield return null;
+            }
+            if (calloutObject != null) Destroy(calloutObject);
         }
 
         private IEnumerator ShowFloatingDamage(RectTransform defender, int damage, bool playerWasHit)

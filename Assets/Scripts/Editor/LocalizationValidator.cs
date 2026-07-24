@@ -43,7 +43,8 @@ namespace PocketRoguelike.EditorTools
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<CatDataSO>)
                 .Where(cat => cat != null).ToArray();
-            if (cats.Length != 300) throw new Exception($"Expected 300 CatData assets, found {cats.Length}.");
+            if (cats.Length != 301) throw new Exception($"Expected index 000 dummy plus 300 CatData assets, found {cats.Length}.");
+            if (cats.Count(cat => cat.dexNo >= 1 && cat.dexNo <= 300) != 300) throw new Exception("Playable CatData IDs must cover 1 through 300 exactly.");
             if (cats.Any(cat => string.IsNullOrWhiteSpace(cat.catNameKorean) || string.IsNullOrWhiteSpace(cat.catNameEnglish)))
                 throw new Exception("At least one CatData asset is missing a localized name.");
 
@@ -60,7 +61,7 @@ namespace PocketRoguelike.EditorTools
             AssertEqual("Basic", LanguageManager.Rarity(CatRarity.Basic), "English rarity");
             manager.SetLanguage(GameLanguage.Korean);
 
-            Debug.Log($"[LocalizationValidation] PASS: {texts.Length} TMP, {legacyTexts.Length} legacy Text, {localized.Length} static keys, {cats.Length} localized cats, language button wired.");
+            Debug.Log($"[LocalizationValidation] PASS: {texts.Length} TMP, {legacyTexts.Length} legacy Text, {localized.Length} static keys, 300 localized cats plus index 000 dummy, language button wired.");
         }
 
         private static void AssertEqual(string expected, string actual, string label)

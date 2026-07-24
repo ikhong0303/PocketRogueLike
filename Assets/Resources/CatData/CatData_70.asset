@@ -19,7 +19,7 @@ MonoBehaviour:
   rarity: 2
   sprite: {fileID: -1862960486197851111, guid: b01d97fe1a693fa46a0864d615074850, type: 3}
   baseHp: 147000
-  baseAtk: 142000
+  baseAtk: 47333
   speed: 30
   skillNameKorean: "\uC5D0\uC77C\uB9AC\uC5B8 \uD68C\uC804 \uD1B1\uB0A0 \uAD11\uC5ED\uACA9"
   skillNameEnglish: "\uC5D0\uC77C\uB9AC\uC5B8 \uD68C\uC804 \uD1B1\uB0A0 \uAD11\uC5ED\uACA9"

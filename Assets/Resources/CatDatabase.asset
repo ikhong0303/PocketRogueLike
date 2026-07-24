@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: CatDatabase
   m_EditorClassIdentifier: PocketRoguelike:CatDatabaseSO
   allCats:
+  - {fileID: 11400000, guid: 7185fbe08ba6d3e4ebe0b420cd735910, type: 2}
   - {fileID: 11400000, guid: 367efbccd2ff4cd899e4dba5d32e5bff, type: 2}
   - {fileID: 11400000, guid: 365ebb68332548d4b5b579f2e3e3134f, type: 2}
   - {fileID: 11400000, guid: f28b9021a8474006a4bc9cffe0aa1ca9, type: 2}

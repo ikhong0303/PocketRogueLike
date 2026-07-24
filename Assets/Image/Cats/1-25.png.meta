@@ -4,19 +4,19 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 752034934989660541
-    second: cat_1
-  - first:
-      213: 8280993853247731799
     second: cat_2
   - first:
-      213: 1706826049336457262
+      213: 8280993853247731799
     second: cat_3
   - first:
+      213: 1706826049336457262
+    second: cat_1
+  - first:
       213: -1960847479984989657
-    second: cat_4
+    second: cat_5
   - first:
       213: -8811421364459280987
-    second: cat_5
+    second: cat_4
   - first:
       213: -7543361514563744148
     second: cat_6
@@ -43,10 +43,10 @@ TextureImporter:
     second: cat_13
   - first:
       213: 6945013123854329793
-    second: cat_14
+    second: cat_15
   - first:
       213: 4283755717856052808
-    second: cat_15
+    second: cat_14
   - first:
       213: -8624799108999274110
     second: cat_16
@@ -67,46 +67,46 @@ TextureImporter:
     second: cat_13
   - first:
       213: -4238412524883726362
-    second: cat_14
+    second: cat_15
   - first:
       213: 2376342479372337827
     second: cat_23
   - first:
       213: -8839405218061131761
-    second: cat_15
+    second: cat_14
   - first:
       213: 8057565138516447397
     second: cat_25
   - first:
       213: 4528294087830538619
-    second: cat_16
-  - first:
-      213: 7154023908910690587
-    second: cat_17
-  - first:
-      213: 5747885436156703166
-    second: cat_18
-  - first:
-      213: 7487240908722683325
-    second: cat_19
-  - first:
-      213: -1868058192298265755
     second: cat_20
   - first:
+      213: 7154023908910690587
+    second: cat_16
+  - first:
+      213: 5747885436156703166
+    second: cat_17
+  - first:
+      213: 7487240908722683325
+    second: cat_18
+  - first:
+      213: -1868058192298265755
+    second: cat_19
+  - first:
       213: -8715973489837360444
-    second: cat_21
+    second: cat_25
   - first:
       213: 7821560210805552448
-    second: cat_22
+    second: cat_21
   - first:
       213: 5393801991430740468
-    second: cat_23
+    second: cat_22
   - first:
       213: -1506921498954208379
-    second: cat_24
+    second: cat_23
   - first:
       213: -1947576052360310526
-    second: cat_25
+    second: cat_24
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -215,7 +215,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: cat_1
+      name: cat_2
       rect:
         serializedVersion: 2
         x: 284
@@ -237,7 +237,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_2
+      name: cat_3
       rect:
         serializedVersion: 2
         x: 505
@@ -259,7 +259,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_3
+      name: cat_1
       rect:
         serializedVersion: 2
         x: 34
@@ -281,7 +281,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_4
+      name: cat_5
       rect:
         serializedVersion: 2
         x: 1000
@@ -303,7 +303,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_5
+      name: cat_4
       rect:
         serializedVersion: 2
         x: 755
@@ -501,7 +501,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_14
+      name: cat_15
       rect:
         serializedVersion: 2
         x: 979
@@ -523,7 +523,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_15
+      name: cat_14
       rect:
         serializedVersion: 2
         x: 732
@@ -545,7 +545,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_16
+      name: cat_20
       rect:
         serializedVersion: 2
         x: 1009
@@ -567,7 +567,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_17
+      name: cat_16
       rect:
         serializedVersion: 2
         x: 40
@@ -589,7 +589,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_18
+      name: cat_17
       rect:
         serializedVersion: 2
         x: 282
@@ -611,7 +611,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_19
+      name: cat_18
       rect:
         serializedVersion: 2
         x: 507
@@ -633,7 +633,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_20
+      name: cat_19
       rect:
         serializedVersion: 2
         x: 725
@@ -655,7 +655,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_21
+      name: cat_25
       rect:
         serializedVersion: 2
         x: 969
@@ -677,7 +677,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_22
+      name: cat_21
       rect:
         serializedVersion: 2
         x: 32
@@ -699,7 +699,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_23
+      name: cat_22
       rect:
         serializedVersion: 2
         x: 234
@@ -721,7 +721,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_24
+      name: cat_23
       rect:
         serializedVersion: 2
         x: 484
@@ -743,7 +743,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: cat_25
+      name: cat_24
       rect:
         serializedVersion: 2
         x: 731
@@ -783,22 +783,24 @@ TextureImporter:
       cat_11: 7727582142676484002
       cat_12: -5805426146954095092
       cat_13: -8402628183911265074
-      cat_14: -4238412524883726362
-      cat_15: -8839405218061131761
-      cat_16: 4528294087830538619
-      cat_17: 7154023908910690587
-      cat_18: 5747885436156703166
-      cat_19: 7487240908722683325
+      cat_14: -8839405218061131761
+      cat_15: -4238412524883726362
+      cat_16: 7154023908910690587
+      cat_17: 5747885436156703166
+      cat_18: 7487240908722683325
+      cat_19: -1868058192298265755
       cat_2: 8280993853247731799
-      cat_20: -1868058192298265755
-      cat_21: -8715973489837360444
-      cat_22: 7821560210805552448
-      cat_23: 5393801991430740468
-      cat_24: -1506921498954208379
-      cat_25: -1947576052360310526
-      cat_3: 1706826049336457262
-      cat_4: -1960847479984989657
-      cat_5: -8811421364459280987
+      cat_20: 4528294087830538619
+      cat_21: 7821560210805552448
+      cat_22: 5393801991430740468
+      cat_23: -1506921498954208379
+      cat_24: -1947576052360310526
+      cat_25: -8715973489837360444
+      cat_1: 1706826049336457262
+      cat_2: 752034934989660541
+      cat_3: 8280993853247731799
+      cat_4: -8811421364459280987
+      cat_5: -1960847479984989657
       cat_6: -7543361514563744148
       cat_7: 1354280375676466086
       cat_8: 8496235402958212714

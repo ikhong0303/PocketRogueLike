@@ -18,11 +18,18 @@ namespace PocketRoguelike
         [Header("BGM Tracks (5 Slots)")]
         [SerializeField] private AudioClip[] bgmClips = new AudioClip[5];
 
+        [Header("Combat SFX")]
+        [SerializeField] private AudioClip attackSfxClip;
+        [SerializeField] private AudioClip hurtSfxClip;
+        [Range(0f, 1f)] [SerializeField] private float sfxVolume = 1f;
+
         [Header("Current Status")]
         [SerializeField] private int currentBgmIndex = 0;
 
         public AudioSource Source => audioSource;
         public AudioClip[] BgmClips => bgmClips;
+        public AudioClip AttackSfxClip => attackSfxClip;
+        public AudioClip HurtSfxClip => hurtSfxClip;
         public int CurrentBgmIndex => currentBgmIndex;
         public float Volume
         {
@@ -208,6 +215,43 @@ namespace PocketRoguelike
                     audioSource.clip = clip;
                 }
             }
+        }
+
+        public void ConfigureGameAudio(AudioClip bgm, AudioClip attackSfx, AudioClip hurtSfx)
+        {
+            SetBgmClip(0, bgm);
+            currentBgmIndex = 0;
+            attackSfxClip = attackSfx;
+            hurtSfxClip = hurtSfx;
+            loop = true;
+            playOnStart = true;
+            InitAudioSource();
+            audioSource.clip = bgm;
+            audioSource.loop = true;
+            audioSource.playOnAwake = false;
+        }
+
+        public void PlayAttackSfx()
+        {
+            PlayOneShot(attackSfxClip, "Attack", "slap");
+        }
+
+        public void PlayHurtSfx()
+        {
+            PlayOneShot(hurtSfxClip, "Hurt", "ouch");
+        }
+
+        private void PlayOneShot(AudioClip clip, string label, string expectedName)
+        {
+            if (clip == null)
+            {
+                Debug.LogWarning($"[SoundManager] {label} SFX is missing (expected {expectedName}).");
+                return;
+            }
+
+            InitAudioSource();
+            audioSource.PlayOneShot(clip, sfxVolume);
+            Debug.Log($"[SoundManager] {label} SFX: {clip.name}");
         }
     }
 }

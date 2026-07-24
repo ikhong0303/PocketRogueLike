@@ -271,7 +271,7 @@ namespace PocketRoguelike
                     return;
                 }
 
-                if (cat != null && cat.Data != null) CatUnlockProgress.Unlock(cat.Data);
+                if (cat != null && cat.Data != null) CatUnlockProgress.RecordCapture(cat.Data);
                 Debug.Log($"[GameManager] Successfully caught {cat.Data.catName}!");
                 CatInstance caughtCat = new CatInstance(cat.Data, cat.Level);
 
