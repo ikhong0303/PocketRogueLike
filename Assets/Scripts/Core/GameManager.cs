@@ -99,6 +99,7 @@ namespace PocketRoguelike
             bool isPPressed = false;
             bool isEscPressed = false;
             bool isHPressed = false;
+            bool isVPressed = false;
 
 #if ENABLE_INPUT_SYSTEM
             if (UnityEngine.InputSystem.Keyboard.current != null)
@@ -107,12 +108,14 @@ namespace PocketRoguelike
                 if (UnityEngine.InputSystem.Keyboard.current.pKey.wasPressedThisFrame) isPPressed = true;
                 if (UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame) isEscPressed = true;
                 if (UnityEngine.InputSystem.Keyboard.current.hKey.wasPressedThisFrame) isHPressed = true;
+                if (UnityEngine.InputSystem.Keyboard.current.vKey.wasPressedThisFrame) isVPressed = true;
             }
 #endif
             if (!isSpacePressed) { try { isSpacePressed = Input.GetKeyDown(KeyCode.Space); } catch { } }
             if (!isPPressed) { try { isPPressed = Input.GetKeyDown(KeyCode.P); } catch { } }
             if (!isEscPressed) { try { isEscPressed = Input.GetKeyDown(KeyCode.Escape); } catch { } }
             if (!isHPressed) { try { isHPressed = Input.GetKeyDown(KeyCode.H); } catch { } }
+            if (!isVPressed) { try { isVPressed = Input.GetKeyDown(KeyCode.V); } catch { } }
 
             // Global Hotkeys based on System Spec 4.3 / 4.4
             if (currentState == GameState.StageBattle)
@@ -126,6 +129,11 @@ namespace PocketRoguelike
                 else if (isHPressed)
                 {
                     TryUsePotion();
+                }
+                // [V] to toggle Party Overview Panel (Show / Hide)
+                else if (isVPressed)
+                {
+                    TogglePartyOverview();
                 }
                 // [P] to open Party Management modal
                 else if (isPPressed)
@@ -287,6 +295,24 @@ namespace PocketRoguelike
                 Debug.Log($"[GameManager] Used Potion on {activeCat.Data.catName}! Healed 50% HP to {activeCat.CurrentHp}/{activeCat.MaxHp}.");
             }
             return success;
+        }
+
+        public void TogglePartyOverview()
+        {
+            if (currentState != GameState.StageBattle) return;
+
+            if (PartyUI.Instance != null)
+            {
+                PartyUI.Instance.ToggleVisibility();
+            }
+            else
+            {
+                PartyUI partyUI = FindObjectOfType<PartyUI>(true);
+                if (partyUI != null)
+                {
+                    partyUI.ToggleVisibility();
+                }
+            }
         }
 
         public void HandleCatchResult(bool isSuccess, CatInstance cat)

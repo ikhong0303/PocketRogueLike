@@ -17,11 +17,26 @@ namespace PocketRoguelike
             public Slider hpSlider;
         }
 
+        public static PartyUI Instance { get; private set; }
+
         [SerializeField] private List<PartySlotUI> slots = new List<PartySlotUI>(6);
 
         private void Awake()
         {
+            if (Instance == null) Instance = this;
             EnsureVerticalLayout();
+        }
+
+        public void ToggleVisibility()
+        {
+            bool targetState = !gameObject.activeSelf;
+            gameObject.SetActive(targetState);
+            Debug.Log($"[PartyUI] Party Panel Visibility Toggled -> {targetState}");
+        }
+
+        public void SetVisible(bool visible)
+        {
+            gameObject.SetActive(visible);
         }
 
         private void OnEnable()
