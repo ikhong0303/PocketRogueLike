@@ -12,11 +12,20 @@ TextureImporter:
       213: -5453283617580107932
     second: cat_103
   - first:
+      213: 8831464545523030259
+    second: 101-125_3
+  - first:
       213: -933151801799174463
     second: cat_104
   - first:
       213: 4815640519595629503
     second: cat_105
+  - first:
+      213: -7208876446462960807
+    second: 101-125_6
+  - first:
+      213: -7984310664036658016
+    second: 101-125_7
   - first:
       213: 5672079281305915645
     second: cat_106
@@ -39,6 +48,9 @@ TextureImporter:
       213: 4957221753841267821
     second: cat_112
   - first:
+      213: -513885919489305280
+    second: 101-125_15
+  - first:
       213: 6061618120582475785
     second: cat_113
   - first:
@@ -59,6 +71,9 @@ TextureImporter:
   - first:
       213: -8216618365795144096
     second: cat_119
+  - first:
+      213: -4708770906711451167
+    second: 101-125_23
   - first:
       213: -1952884547387486075
     second: cat_120
@@ -738,7 +753,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: b8ced6de0f6404e4eb837423f2d2ebd3
+    spriteID: 4db5936e93e5fc94190b534584708701
     internalID: 0
     vertices: []
     indices: 
