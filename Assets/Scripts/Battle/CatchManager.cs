@@ -173,6 +173,10 @@ namespace PocketRoguelike
                 bool passed = UnityEngine.Random.value < shakeChance;
                 OnCaptureShake?.Invoke(shake, passed);
                 Debug.Log($"[CatchManager] Shake {shake}/3: {(passed ? "TRUE" : "FALSE")}");
+                if (shake == 3 && passed)
+                {
+                    SoundManager.Instance?.PlayCatchSfx();
+                }
                 if (!passed)
                 {
                     FinishCapture(false, expectedTarget);

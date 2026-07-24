@@ -292,6 +292,7 @@ namespace PocketRoguelike
             bool success = CatchManager.Instance.UsePotion(activeCat);
             if (success)
             {
+                SoundManager.Instance?.PlayDrinkSfx();
                 Debug.Log($"[GameManager] Used Potion on {activeCat.Data.catName}! Healed 50% HP to {activeCat.CurrentHp}/{activeCat.MaxHp}.");
             }
             return success;

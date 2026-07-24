@@ -173,7 +173,11 @@
 
 #### [`SoundManager.cs`](file:///c:/UnityProject/PocketRoguelike/Assets/Scripts/SoundManager.cs)
 * **역할**: 게임 내 배경음악(BGM) 및 효과음(SFX) 관리.
-* **주요 기능**: `Assets/Sounds` 내의 오디오 클립(`ouch.mp3`, `slap.mp3` 등) 재생, 볼륨 조절 및 Mute 제어.
+* **주요 기능**:
+  - `Assets/Sounds` 내의 오디오 클립(`BGM.mp3`, `slap.mp3`, `ouch.mp3`, `Drink.mp3`, `Heal.mp3`, `Catch.mp3`) 재생, 볼륨 조절 및 원샷 SFX 제어.
+  - **[H] 키 포션 회복**: 포션 사용 성공 시 `Drink.mp3` 1회성 효과음 재생.
+  - **[부활] 버튼 클릭**: 기력의 조각으로 냥코 부활 시 `Heal.mp3` 1회성 효과음 재생.
+  - **3-Shake 포획 성공 (`truetruetrue`)**: 몬스터볼 3번째 Shake 성공 시 `Catch.mp3` 1회성 효과음 재생.
 
 ---
 

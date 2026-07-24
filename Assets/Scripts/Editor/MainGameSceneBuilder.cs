@@ -48,7 +48,10 @@ namespace PocketRoguelike.EditorTools
             soundMgr.ConfigureGameAudio(
                 AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sounds/BGM.mp3"),
                 AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sounds/slap.mp3"),
-                AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sounds/ouch.mp3"));
+                AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sounds/ouch.mp3"),
+                AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sounds/Drink.mp3"),
+                AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sounds/Heal.mp3"),
+                AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sounds/Catch.mp3"));
             UIManager uiMgr = managersGO.AddComponent<UIManager>();
             LanguageManager languageMgr = managersGO.AddComponent<LanguageManager>();
 

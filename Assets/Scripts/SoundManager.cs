@@ -21,6 +21,9 @@ namespace PocketRoguelike
         [Header("Combat SFX")]
         [SerializeField] private AudioClip attackSfxClip;
         [SerializeField] private AudioClip hurtSfxClip;
+        [SerializeField] private AudioClip drinkSfxClip;
+        [SerializeField] private AudioClip healSfxClip;
+        [SerializeField] private AudioClip catchSfxClip;
         [Range(0f, 1f)] [SerializeField] private float sfxVolume = 1f;
 
         [Header("Current Status")]
@@ -30,6 +33,9 @@ namespace PocketRoguelike
         public AudioClip[] BgmClips => bgmClips;
         public AudioClip AttackSfxClip => attackSfxClip;
         public AudioClip HurtSfxClip => hurtSfxClip;
+        public AudioClip DrinkSfxClip => drinkSfxClip;
+        public AudioClip HealSfxClip => healSfxClip;
+        public AudioClip CatchSfxClip => catchSfxClip;
         public int CurrentBgmIndex => currentBgmIndex;
         public float Volume
         {
@@ -217,12 +223,15 @@ namespace PocketRoguelike
             }
         }
 
-        public void ConfigureGameAudio(AudioClip bgm, AudioClip attackSfx, AudioClip hurtSfx)
+        public void ConfigureGameAudio(AudioClip bgm, AudioClip attackSfx, AudioClip hurtSfx, AudioClip drinkSfx = null, AudioClip healSfx = null, AudioClip catchSfx = null)
         {
             SetBgmClip(0, bgm);
             currentBgmIndex = 0;
             attackSfxClip = attackSfx;
             hurtSfxClip = hurtSfx;
+            if (drinkSfx != null) drinkSfxClip = drinkSfx;
+            if (healSfx != null) healSfxClip = healSfx;
+            if (catchSfx != null) catchSfxClip = catchSfx;
             loop = true;
             playOnStart = true;
             InitAudioSource();
@@ -239,6 +248,39 @@ namespace PocketRoguelike
         public void PlayHurtSfx()
         {
             PlayOneShot(hurtSfxClip, "Hurt", "ouch");
+        }
+
+        public void PlayDrinkSfx()
+        {
+            if (drinkSfxClip == null)
+            {
+#if UNITY_EDITOR
+                drinkSfxClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sounds/Drink.mp3");
+#endif
+            }
+            PlayOneShot(drinkSfxClip, "Drink", "Drink.mp3");
+        }
+
+        public void PlayHealSfx()
+        {
+            if (healSfxClip == null)
+            {
+#if UNITY_EDITOR
+                healSfxClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sounds/Heal.mp3");
+#endif
+            }
+            PlayOneShot(healSfxClip, "Heal", "Heal.mp3");
+        }
+
+        public void PlayCatchSfx()
+        {
+            if (catchSfxClip == null)
+            {
+#if UNITY_EDITOR
+                catchSfxClip = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Sounds/Catch.mp3");
+#endif
+            }
+            PlayOneShot(catchSfxClip, "Catch", "Catch.mp3");
         }
 
         private void PlayOneShot(AudioClip clip, string label, string expectedName)

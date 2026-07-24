@@ -175,6 +175,7 @@ namespace PocketRoguelike
                     {
                         if (CatchManager.Instance != null && CatchManager.Instance.UseRevive(cat))
                         {
+                            SoundManager.Instance?.PlayHealSfx();
                             RefreshModal();
                         }
                     });
