@@ -98,21 +98,156 @@ namespace PocketRoguelike
 
         public static string Format(string key, params object[] args) => string.Format(Get(key), args);
 
+        public static bool ContainsKorean(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return false;
+            foreach (char c in text)
+            {
+                if ((c >= 0xAC00 && c <= 0xD7A3) || (c >= 0x1100 && c <= 0x11FF) || (c >= 0x3130 && c <= 0x318F))
+                    return true;
+            }
+            return false;
+        }
+
+        private static readonly Dictionary<string, string> SkillTranslationMap = new Dictionary<string, string>
+        {
+            { "기본 공격", "Basic Attack" },
+            { "단일 근접 냥코 펀치", "Single Melee Cat Punch" },
+            { "블록 밀착 타격", "Block Shield Strike" },
+            { "빨간 적 특수 베기", "Anti-Red Special Slash" },
+            { "원거리 하이킥", "Long-Range High Kick" },
+            { "초속공 돌진 헤딩", "Super Speed Charge Headbutt" },
+            { "단사거리 광역 새 쪼기", "Close Area Peck" },
+            { "빨간 적 특화 바이트", "Anti-Red Special Bite" },
+            { "초원거리 불꽃 브레스", "Long Flame Breath" },
+            { "광역 냥코 펀치", "Area Cat Punch" },
+            { "삼바 댄스 연타", "Samba Dance Flurry" },
+            { "3연속 합동 검술", "Trio Cross Slash" },
+            { "표창 연속 투척", "Shuriken Toss" },
+            { "빨간 적 특효 참격", "Anti-Red Slash" },
+            { "밀어내기 손바닥 치기", "Pushing Palm Strike" },
+            { "속공 큐트 펀치", "Speed Cute Punch" },
+            { "배리어 브레이커 킥", "Barrier Breaker Kick" },
+            { "팬츠 휩쓸기 킥", "Pants Sweep Kick" },
+            { "에일리언 특화 빔", "Anti-Alien Beam" },
+            { "검은 적 전용 악마 펀치", "Anti-Black Demon Punch" },
+            { "유령 투령 기습", "Phantom Strike" },
+            { "좀비 킬러 매장 베기", "Zombie Slayer Burial" },
+            { "레전드 파동검", "Legend Wave Blade" },
+            { "신속 발키리 창", "Swift Valkyrie Spear" },
+            { "각성 폭화 일격", "Awakened Fire Strike" },
+            { "원거리 태풍 사격", "Typhoon Ranged Shot" },
+            { "바주카 원거리 포격", "Bazooka Cannon Shell" },
+            { "꼬마 냥코 펀치", "Mini Cat Punch" },
+            { "꼬마 블록 장막", "Mini Block Shield" },
+            { "꼬마 빨간 적 특공", "Mini Anti-Red Assault" },
+            { "꼬마 파동 발사", "Mini Wave Shot" },
+            { "꼬마 초속공 돌진", "Mini Speed Rush" },
+            { "꼬마 공중 광역 포격", "Mini Aerial Bombardment" },
+            { "꼬마 물고기 크리티컬", "Mini Fish Crit Bite" },
+            { "꼬마 불꽃 원거리 사격", "Mini Flame Shot" },
+            { "꼬마 거인 고양이", "Mini Giant Cat" },
+            { "꼬마 지진 펀치", "Mini Earthquake Punch" },
+            { "배리어 브레이커 시약 포격", "Reagent Barrier Breaker" },
+            { "초고체력 1회성 돌진", "Ultra Tank Charge" },
+            { "선인 전용 광역 파동", "Hermit Area Shockwave" },
+            { "신들의 황혼 신벌 포격", "Godly Judgment Cannon" },
+            { "모밀 크리티컬 일격", "Soba Noodle Crit Strike" },
+            { "카레 원거리 광역 투척", "Curry Ranged Bomb" },
+            { "사망시 자폭 대형 파동", "Death Explosion Wave" },
+            { "초수인 특공 포자 포격", "Spore Beast Cannon" },
+            { "원거리 조준 스나이핑", "Sniper Precision Shot" },
+            { "붉은 적 특화 대포 사격", "Anti-Red Cannon" },
+            { "레슬링 드롭킥", "Wrestling Dropkick" },
+            { "유틸리티 기계 빔", "Tech Utility Beam" },
+            { "강림 특화 대장 포격", "Commander Descent Cannon" },
+            { "고대종/악 마 특공 참격", "Ancient Demon Slash" },
+            { "양산형 범용 원거리 범위 사격", "Mass Production Beam" }
+        };
+
+        public static string TranslateSkillNameToEnglish(string koreanSkill, int dexNo)
+        {
+            if (string.IsNullOrWhiteSpace(koreanSkill)) return dexNo > 0 ? $"Cat #{dexNo} Attack" : "Basic Attack";
+            string trimmed = koreanSkill.Trim();
+            if (SkillTranslationMap.TryGetValue(trimmed, out string exact)) return exact;
+
+            string translated = trimmed;
+            translated = translated.Replace("냥코 펀치", "Cat Punch");
+            translated = translated.Replace("펀치", "Punch");
+            translated = translated.Replace("타격", "Strike");
+            translated = translated.Replace("참격", "Slash");
+            translated = translated.Replace("베기", "Slash");
+            translated = translated.Replace("하이킥", "High Kick");
+            translated = translated.Replace("헤딩", "Headbutt");
+            translated = translated.Replace("쪼기", "Peck");
+            translated = translated.Replace("바이트", "Bite");
+            translated = translated.Replace("물기", "Bite");
+            translated = translated.Replace("브레스", "Breath");
+            translated = translated.Replace("파동검", "Wave Blade");
+            translated = translated.Replace("파동", "Shockwave");
+            translated = translated.Replace("포격", "Cannon Shell");
+            translated = translated.Replace("대포", "Cat Cannon");
+            translated = translated.Replace("사격", "Ranged Shot");
+            translated = translated.Replace("크리티컬", "Critical Strike");
+            translated = translated.Replace("자폭", "Self-Destruct");
+            translated = translated.Replace("드롭킥", "Dropkick");
+            translated = translated.Replace("스나이핑", "Sniper Shot");
+            translated = translated.Replace("빔", "Beam");
+            translated = translated.Replace("일격", "Strike");
+            translated = translated.Replace("단일", "Single");
+            translated = translated.Replace("광역", "Area");
+            translated = translated.Replace("원거리", "Long Range");
+            translated = translated.Replace("근접", "Melee");
+            translated = translated.Replace("빨간 적", "Anti-Red");
+            translated = translated.Replace("붉은 적", "Anti-Red");
+            translated = translated.Replace("검은 적", "Anti-Black");
+            translated = translated.Replace("천사", "Anti-Angel");
+            translated = translated.Replace("에일리언", "Anti-Alien");
+            translated = translated.Replace("좀비", "Anti-Zombie");
+            translated = translated.Replace("메탈", "Anti-Metal");
+            translated = translated.Replace("고대종", "Anti-Ancient");
+            translated = translated.Replace("악마", "Anti-Demon");
+            translated = translated.Replace("기본 공격", "Basic Attack");
+
+            if (ContainsKorean(translated))
+            {
+                return dexNo > 0 ? $"Cat #{dexNo} Attack" : "Basic Attack";
+            }
+            return translated;
+        }
+
         public static string CatName(CatDataSO data)
         {
             if (data == null) return IsKorean ? "고양이" : "Cat";
-            string localized = IsKorean ? data.catNameKorean : data.catNameEnglish;
-            if (!string.IsNullOrWhiteSpace(localized)) return localized;
-            if (IsKorean) return $"고양이 #{data.dexNo}";
-            return string.IsNullOrWhiteSpace(data.catName) ? $"Cat #{data.dexNo}" : data.catName;
+            if (IsKorean)
+            {
+                if (!string.IsNullOrWhiteSpace(data.catNameKorean)) return data.catNameKorean;
+                if (!string.IsNullOrWhiteSpace(data.catName)) return data.catName;
+                return $"고양이 #{data.dexNo}";
+            }
+            else
+            {
+                string en = data.catNameEnglish;
+                if (!string.IsNullOrWhiteSpace(en) && !ContainsKorean(en)) return en;
+                if (!string.IsNullOrWhiteSpace(data.catName) && !ContainsKorean(data.catName)) return data.catName;
+                return $"Cat #{data.dexNo}";
+            }
         }
 
         public static string SkillName(CatDataSO data)
         {
             if (data == null) return IsKorean ? "기본 공격" : "Basic Attack";
-            string localized = IsKorean ? data.skillNameKorean : data.skillNameEnglish;
-            if (!string.IsNullOrWhiteSpace(localized)) return localized;
-            return IsKorean ? "기본 공격" : "Basic Attack";
+            if (IsKorean)
+            {
+                if (!string.IsNullOrWhiteSpace(data.skillNameKorean)) return data.skillNameKorean;
+                return "기본 공격";
+            }
+            else
+            {
+                string en = data.skillNameEnglish;
+                if (!string.IsNullOrWhiteSpace(en) && !ContainsKorean(en)) return en;
+                return TranslateSkillNameToEnglish(data.skillNameKorean, data.dexNo);
+            }
         }
 
         public static string Rarity(CatRarity rarity)
@@ -129,5 +264,4 @@ namespace PocketRoguelike
             }
         }
     }
-
 }

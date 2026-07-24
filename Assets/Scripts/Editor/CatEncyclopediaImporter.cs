@@ -47,12 +47,12 @@ namespace PocketRoguelike.EditorTools
                 data.dexNo = id;
                 data.catName = entry.KoreanName;
                 data.catNameKorean = entry.KoreanName;
-                data.catNameEnglish = $"Cat #{id} ({entry.KoreanName})";
+                data.catNameEnglish = $"Cat #{id}";
                 data.baseHp = entry.Hp;
                 data.baseAtk = entry.Atk;
                 data.speed = 30 + (id % 70);
                 data.skillNameKorean = entry.PrimarySkillKorean;
-                data.skillNameEnglish = entry.PrimarySkillKorean;
+                data.skillNameEnglish = LanguageManager.TranslateSkillNameToEnglish(entry.PrimarySkillKorean, id);
                 data.attackSkillsKorean = entry.AttackSkillsKorean;
                 data.defenseSkillKorean = entry.DefenseSkillKorean;
                 data.debuffSkillKorean = entry.DebuffSkillKorean;

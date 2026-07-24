@@ -34,10 +34,13 @@ namespace PocketRoguelike
             if (dexNo < 0) dexNo = 0;
             if (dexNo > 300) dexNo = 300;
             if (string.IsNullOrEmpty(catName)) catName = $"Cat #{dexNo}";
-            if (string.IsNullOrEmpty(catNameEnglish)) catNameEnglish = catName;
             if (string.IsNullOrEmpty(catNameKorean)) catNameKorean = $"고양이 #{dexNo}";
+            if (string.IsNullOrEmpty(catNameEnglish) || LanguageManager.ContainsKorean(catNameEnglish)) catNameEnglish = $"Cat #{dexNo}";
             if (string.IsNullOrEmpty(skillNameKorean)) skillNameKorean = "기본 공격";
-            if (string.IsNullOrEmpty(skillNameEnglish)) skillNameEnglish = skillNameKorean;
+            if (string.IsNullOrEmpty(skillNameEnglish) || LanguageManager.ContainsKorean(skillNameEnglish))
+            {
+                skillNameEnglish = LanguageManager.TranslateSkillNameToEnglish(skillNameKorean, dexNo);
+            }
         }
     }
 }
