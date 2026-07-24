@@ -17,6 +17,7 @@ namespace PocketRoguelike
             public TMP_Text hpText;
             public Button replaceButton;
             public Button releaseButton;
+            public Button reviveButton;
         }
 
         [SerializeField] private List<ModalSlot> modalSlots = new List<ModalSlot>(6);
@@ -45,14 +46,17 @@ namespace PocketRoguelike
             var party = PartyManager.Instance.Party;
             bool hasPendingCat = GameManager.Instance != null && GameManager.Instance.HasPendingCaughtCat;
             bool forcedSwitch = GameManager.Instance != null && GameManager.Instance.IsForcedSwitch;
+            int revives = CatchManager.Instance != null ? CatchManager.Instance.ReviveCount : 0;
+            string reviveInfo = $" ({LanguageManager.Format("revive_count_info", revives)})";
+
             if (closeButton != null) closeButton.gameObject.SetActive(!forcedSwitch);
             if (headerText != null)
             {
-                headerText.text = hasPendingCat
+                headerText.text = (hasPendingCat
                     ? LanguageManager.Format("party_full_replace", LanguageManager.CatName(GameManager.Instance.PendingCaughtCat.Data))
                     : forcedSwitch
                         ? LanguageManager.Get("forced_switch")
-                        : LanguageManager.Get("party_switch_turn_cost");
+                        : LanguageManager.Get("party_switch_turn_cost")) + reviveInfo;
             }
 
             for (int i = 0; i < modalSlots.Count; i++)
@@ -100,6 +104,79 @@ namespace PocketRoguelike
                     {
                         GameManager.Instance?.ReleasePartyMember(index);
                         RefreshModal();
+                    });
+                }
+
+                // Revive Button setup
+                Button reviveBtn = slot.reviveButton;
+                if (reviveBtn == null && slot.container != null)
+                {
+                    Transform reviveTrans = slot.container.transform.Find("ReviveButton");
+                    if (reviveTrans != null)
+                    {
+                        reviveBtn = reviveTrans.GetComponent<Button>();
+                    }
+                    else
+                    {
+                        GameObject reviveGO = new GameObject("ReviveButton", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+                        reviveGO.transform.SetParent(slot.container.transform, false);
+                        RectTransform rt = reviveGO.GetComponent<RectTransform>();
+                        rt.anchorMin = new Vector2(0.67f, 0.16f);
+                        rt.anchorMax = new Vector2(0.81f, 0.84f);
+                        rt.offsetMin = Vector2.zero;
+                        rt.offsetMax = Vector2.zero;
+
+                        Image bg = reviveGO.GetComponent<Image>();
+                        bg.color = new Color(0.18f, 0.65f, 0.28f, 1f);
+
+                        GameObject txtGO = new GameObject("Text", typeof(RectTransform), typeof(TextMeshProUGUI));
+                        txtGO.transform.SetParent(reviveGO.transform, false);
+                        RectTransform txtRt = txtGO.GetComponent<RectTransform>();
+                        txtRt.anchorMin = Vector2.zero;
+                        txtRt.anchorMax = Vector2.one;
+                        txtRt.offsetMin = Vector2.zero;
+                        txtRt.offsetMax = Vector2.zero;
+
+                        TextMeshProUGUI label = txtGO.GetComponent<TextMeshProUGUI>();
+                        label.text = LanguageManager.Get("revive");
+                        label.alignment = TextAlignmentOptions.Center;
+                        label.fontSize = 18f;
+                        label.fontStyle = FontStyles.Bold;
+                        label.color = Color.white;
+                        if (slot.nameText != null && slot.nameText.font != null) label.font = slot.nameText.font;
+
+                        reviveBtn = reviveGO.GetComponent<Button>();
+
+                        if (slot.replaceButton != null)
+                        {
+                            RectTransform rRt = slot.replaceButton.GetComponent<RectTransform>();
+                            rRt.anchorMin = new Vector2(0.51f, 0.16f);
+                            rRt.anchorMax = new Vector2(0.65f, 0.84f);
+                        }
+                        if (slot.releaseButton != null)
+                        {
+                            RectTransform relRt = slot.releaseButton.GetComponent<RectTransform>();
+                            relRt.anchorMin = new Vector2(0.83f, 0.16f);
+                            relRt.anchorMax = new Vector2(0.97f, 0.84f);
+                        }
+                    }
+                    slot.reviveButton = reviveBtn;
+                }
+
+                if (reviveBtn != null)
+                {
+                    reviveBtn.gameObject.SetActive(cat.IsFainted);
+                    reviveBtn.interactable = cat.IsFainted && CatchManager.Instance != null && CatchManager.Instance.ReviveCount > 0;
+                    TMP_Text reviveLabel = reviveBtn.GetComponentInChildren<TMP_Text>();
+                    if (reviveLabel != null) reviveLabel.text = LanguageManager.Get("revive");
+
+                    reviveBtn.onClick.RemoveAllListeners();
+                    reviveBtn.onClick.AddListener(() =>
+                    {
+                        if (CatchManager.Instance != null && CatchManager.Instance.UseRevive(cat))
+                        {
+                            RefreshModal();
+                        }
                     });
                 }
             }

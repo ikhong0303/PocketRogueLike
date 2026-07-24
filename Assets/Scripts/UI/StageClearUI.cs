@@ -43,11 +43,12 @@ namespace PocketRoguelike
                 descriptionText.text = LanguageManager.Format("stage_clear_description", LanguageManager.CatName(defeated?.Data));
 
             VictoryReward reward = GameManager.Instance != null ? GameManager.Instance.LastVictoryReward : default;
-            string rewardKey = reward.monsterBall && reward.potion ? "reward_both"
-                : reward.monsterBall ? "reward_ball"
-                : reward.potion ? "reward_potion"
-                : "reward_none";
-            if (rewardText != null) rewardText.text = LanguageManager.Get(rewardKey);
+            var rewards = new System.Collections.Generic.List<string>();
+            if (reward.monsterBall) rewards.Add(LanguageManager.Get("reward_ball"));
+            if (reward.potion) rewards.Add(LanguageManager.Get("reward_potion"));
+            if (reward.revive) rewards.Add(LanguageManager.Get("reward_revive"));
+            string rewardMessage = rewards.Count > 0 ? string.Join("\n", rewards) : LanguageManager.Get("reward_none");
+            if (rewardText != null) rewardText.text = rewardMessage;
             if (confirmButton != null)
             {
                 TMP_Text label = confirmButton.GetComponentInChildren<TMP_Text>(true);

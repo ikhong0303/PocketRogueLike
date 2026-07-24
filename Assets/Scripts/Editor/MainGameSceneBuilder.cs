@@ -226,10 +226,12 @@ namespace PocketRoguelike.EditorTools
                 TMP_Text hpText = CreateTMPText("HP", slot.transform, "HP: 0/0", 20, TextAlignmentOptions.Left);
                 SetRect(hpText.GetComponent<RectTransform>(), 0.32f, 0.1f, 0.62f, 0.5f);
                 Button replace = CreateUIButton("ReplaceButton", slot.transform, "SWITCH");
-                SetRect(replace.GetComponent<RectTransform>(), 0.63f, 0.16f, 0.79f, 0.84f);
+                SetRect(replace.GetComponent<RectTransform>(), 0.51f, 0.16f, 0.65f, 0.84f);
+                Button revive = CreateUIButton("ReviveButton", slot.transform, "REVIVE");
+                SetRect(revive.GetComponent<RectTransform>(), 0.67f, 0.16f, 0.81f, 0.84f);
                 Button release = CreateUIButton("ReleaseButton", slot.transform, "RELEASE");
-                SetRect(release.GetComponent<RectTransform>(), 0.81f, 0.16f, 0.97f, 0.84f);
-                modalSlots.Add(new PartyManageModalUI.ModalSlot { container = slot, iconImage = icon, nameText = name, levelText = level, hpText = hpText, replaceButton = replace, releaseButton = release });
+                SetRect(release.GetComponent<RectTransform>(), 0.83f, 0.16f, 0.97f, 0.84f);
+                modalSlots.Add(new PartyManageModalUI.ModalSlot { container = slot, iconImage = icon, nameText = name, levelText = level, hpText = hpText, replaceButton = replace, releaseButton = release, reviveButton = revive });
             }
             SetField(partyModalUIComponent, "modalSlots", modalSlots);
             SetField(partyModalUIComponent, "closeButton", closePartyButton);

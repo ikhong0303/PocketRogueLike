@@ -9,7 +9,8 @@ namespace PocketRoguelike
     {
         public bool monsterBall;
         public bool potion;
-        public bool HasAny => monsterBall || potion;
+        public bool revive;
+        public bool HasAny => monsterBall || potion || revive;
     }
 
     public class CatchManager : MonoBehaviour
@@ -23,10 +24,14 @@ namespace PocketRoguelike
         [SerializeField, Min(0)] private int potionCount;
         [SerializeField, Min(1)] private int maxPotionCount = 99;
         [SerializeField, Range(0.01f, 1f)] private float potionHealRatio = 0.50f;
+        [SerializeField, Min(0)] private int reviveCount;
+        [SerializeField, Min(1)] private int maxReviveCount = 99;
+        [SerializeField, Range(0.01f, 1f)] private float reviveHealRatio = 0.50f;
 
         [Header("Victory Drop Rates")]
         [SerializeField, Range(0f, 1f)] private float monsterBallDropChance = 0.10f;
         [SerializeField, Range(0f, 1f)] private float potionDropChance = 0.10f;
+        [SerializeField, Range(0f, 1f)] private float reviveDropChance = 0.10f;
 
         [Header("Capture Probability")]
         [SerializeField, Range(0.01f, 0.99f)] private float fullHpShakeChance = 0.25f;
@@ -36,6 +41,7 @@ namespace PocketRoguelike
 
         public int BallCount => ballCount;
         public int PotionCount => potionCount;
+        public int ReviveCount => reviveCount;
         public int StartingBallCount => startingBallCount;
         public bool HasBalls => ballCount > 0;
         public bool IsCaptureResolving { get; private set; }
@@ -43,6 +49,7 @@ namespace PocketRoguelike
 
         public event Action<int> OnBallCountChanged;
         public event Action<int> OnPotionCountChanged;
+        public event Action<int> OnReviveCountChanged;
         public event Action<CatInstance> OnCaptureStarted;
         public event Action<int, bool> OnCaptureShake;
         public event Action<bool, CatInstance> OnCatchResult;
@@ -67,9 +74,11 @@ namespace PocketRoguelike
         {
             ballCount = Mathf.Clamp(startingBallCount, 0, maxBallCount);
             potionCount = 0;
+            reviveCount = 0;
             OnBallCountChanged?.Invoke(ballCount);
             OnPotionCountChanged?.Invoke(potionCount);
-            Debug.Log($"[CatchManager] Run inventory initialized: {ballCount} Monster Balls, {potionCount} Potions.");
+            OnReviveCountChanged?.Invoke(reviveCount);
+            Debug.Log($"[CatchManager] Run inventory initialized: {ballCount} Monster Balls, {potionCount} Potions, {reviveCount} Revives.");
         }
 
         public void InitRunBalls() => InitRunInventory();
@@ -88,6 +97,13 @@ namespace PocketRoguelike
             OnPotionCountChanged?.Invoke(potionCount);
         }
 
+        public void AddRevives(int amount)
+        {
+            if (amount <= 0) return;
+            reviveCount = Mathf.Clamp(reviveCount + amount, 0, maxReviveCount);
+            OnReviveCountChanged?.Invoke(reviveCount);
+        }
+
         public bool UsePotion(CatInstance target)
         {
             if (potionCount <= 0 || target == null || target.IsFainted || target.CurrentHp >= target.MaxHp) return false;
@@ -97,16 +113,29 @@ namespace PocketRoguelike
             return true;
         }
 
+        public bool UseRevive(CatInstance target)
+        {
+            if (reviveCount <= 0 || target == null || !target.IsFainted) return false;
+            reviveCount--;
+            int reviveHp = Mathf.Max(1, Mathf.RoundToInt(target.MaxHp * reviveHealRatio));
+            target.Heal(reviveHp);
+            OnReviveCountChanged?.Invoke(reviveCount);
+            Debug.Log($"[CatchManager] Used Revive on {target.Data.catName}! Revived to {target.CurrentHp}/{target.MaxHp} HP (50%).");
+            return true;
+        }
+
         public VictoryReward RollVictoryDrops()
         {
             VictoryReward reward = new VictoryReward
             {
                 monsterBall = UnityEngine.Random.value < monsterBallDropChance,
-                potion = UnityEngine.Random.value < potionDropChance
+                potion = UnityEngine.Random.value < potionDropChance,
+                revive = UnityEngine.Random.value < reviveDropChance
             };
             if (reward.monsterBall) AddBalls(1);
             if (reward.potion) AddPotions(1);
-            Debug.Log($"[Rewards] Victory drops - Monster Ball: {reward.monsterBall}, Potion: {reward.potion}");
+            if (reward.revive) AddRevives(1);
+            Debug.Log($"[Rewards] Victory drops - Monster Ball: {reward.monsterBall}, Potion: {reward.potion}, Revive: {reward.revive}");
             return reward;
         }
 
