@@ -293,6 +293,18 @@ namespace PocketRoguelike
             if (success)
             {
                 SoundManager.Instance?.PlayDrinkSfx();
+
+                BattleUI battleUI = FindObjectOfType<BattleUI>();
+                if (battleUI != null)
+                {
+                    battleUI.RefreshPlayerHp();
+                }
+
+                if (PartyUI.Instance != null)
+                {
+                    PartyUI.Instance.RefreshPartyUI();
+                }
+
                 Debug.Log($"[GameManager] Used Potion on {activeCat.Data.catName}! Healed 50% HP to {activeCat.CurrentHp}/{activeCat.MaxHp}.");
             }
             return success;

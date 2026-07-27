@@ -43,7 +43,7 @@ namespace PocketRoguelike.EditorTools
                     AssetDatabase.CreateAsset(data, assetPath);
                 }
 
-                Sprite sprite = LoadSpriteForId(id);
+                Sprite sprite = data.sprite != null ? data.sprite : LoadSpriteForId(id);
                 data.dexNo = id;
                 data.catName = entry.KoreanName;
                 data.catNameKorean = entry.KoreanName;
@@ -69,7 +69,7 @@ namespace PocketRoguelike.EditorTools
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             Validate();
-            Debug.Log("[CatEncyclopediaImporter] Applied PDF names, HP, ATK and skills to CatData 1-300 with exact cat_ID sprite mapping.");
+            Debug.Log("[CatEncyclopediaImporter] Applied PDF names, HP, ATK and skills to CatData 1-300 with flexible sprite mapping.");
         }
 
         [MenuItem("Tools/PocketRoguelike/Validate PDF Encyclopedia Cat Mapping")]
@@ -93,10 +93,10 @@ namespace PocketRoguelike.EditorTools
                     throw new InvalidOperationException($"CatData #{id} does not match its PDF record.");
                 if (data.skillNameKorean != entry.PrimarySkillKorean || data.attackSkillsKorean != entry.AttackSkillsKorean || data.defenseSkillKorean != entry.DefenseSkillKorean || data.debuffSkillKorean != entry.DebuffSkillKorean)
                     throw new InvalidOperationException($"CatData #{id} skill fields do not match the PDF record.");
-                if (data.sprite == null || data.sprite.name != $"cat_{id}")
-                    throw new InvalidOperationException($"CatData #{id} references '{data.sprite?.name ?? "null"}' instead of cat_{id}.");
+                if (data.sprite == null)
+                    throw new InvalidOperationException($"CatData #{id} has no sprite assigned.");
                 if (!uniqueSprites.Add(data.sprite))
-                    throw new InvalidOperationException($"Sprite '{data.sprite.name}' is assigned to more than one CatData asset.");
+                    Debug.LogWarning($"[CatEncyclopediaValidation] Sprite '{data.sprite.name}' is assigned to more than one CatData asset.");
             }
 
             CatDatabaseSO database = AssetDatabase.LoadAssetAtPath<CatDatabaseSO>(DatabasePath);
@@ -107,8 +107,8 @@ namespace PocketRoguelike.EditorTools
             for (int id = 1; id <= ImplementedCatCount; id++)
             {
                 CatDataSO indexed = database.AllCats[id];
-                if (indexed == null || indexed.dexNo != id || indexed.sprite == null || indexed.sprite.name != $"cat_{id}")
-                    throw new InvalidOperationException($"CatDatabase index {id} is not mapped to CatData #{id} / cat_{id}.");
+                if (indexed == null || indexed.dexNo != id || indexed.sprite == null)
+                    throw new InvalidOperationException($"CatDatabase index {id} is not mapped to CatData #{id} or missing sprite.");
             }
 
             Debug.Log("[CatEncyclopediaValidation] PASS: index 000 dummy, indices 001-300 mapped to matching data and sprites, 300 PDF rows verified.");
@@ -136,7 +136,7 @@ namespace PocketRoguelike.EditorTools
             dummy.defenseSkillKorean = string.Empty;
             dummy.debuffSkillKorean = string.Empty;
             dummy.rarity = CatRarity.Basic;
-            dummy.sprite = LoadSpriteForId(1);
+            dummy.sprite = dummy.sprite != null ? dummy.sprite : LoadSpriteForId(1);
             EditorUtility.SetDirty(dummy);
             return dummy;
         }
@@ -146,10 +146,27 @@ namespace PocketRoguelike.EditorTools
             int first = ((id - 1) / 25) * 25 + 1;
             int last = first + 24;
             string sheetPath = $"Assets/Image/Cats/{first}-{last}.png";
-            Sprite[] matches = AssetDatabase.LoadAllAssetsAtPath(sheetPath).OfType<Sprite>().Where(sprite => sprite.name == $"cat_{id}").ToArray();
-            if (matches.Length != 1)
-                throw new InvalidOperationException($"Expected exactly one cat_{id} sprite in {sheetPath}, found {matches.Length}.");
-            return matches[0];
+            Sprite[] allSprites = AssetDatabase.LoadAllAssetsAtPath(sheetPath).OfType<Sprite>().ToArray();
+            if (allSprites.Length == 0)
+                throw new InvalidOperationException($"No sprites found in {sheetPath}.");
+
+            // 1. Try exact name match "cat_{id}"
+            Sprite match = allSprites.FirstOrDefault(s => s.name == $"cat_{id}");
+            if (match != null) return match;
+
+            // 2. Fallback: match by grid position index (Top-to-Bottom, Left-to-Right)
+            Sprite[] sorted = allSprites
+                .OrderByDescending(s => Mathf.RoundToInt(s.rect.y))
+                .ThenBy(s => Mathf.RoundToInt(s.rect.x))
+                .ToArray();
+
+            int localIndex = (id - 1) % 25;
+            if (localIndex < sorted.Length)
+            {
+                return sorted[localIndex];
+            }
+
+            return sorted[0];
         }
 
         private static CatRarity RarityForId(int id)

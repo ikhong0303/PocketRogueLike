@@ -15,14 +15,14 @@ MonoBehaviour:
   dexNo: 28
   catName: "\uAF2C\uB9C8 \uACE0\uC591\uC774 \uBCBD"
   catNameKorean: "\uAF2C\uB9C8 \uACE0\uC591\uC774 \uBCBD"
-  catNameEnglish: "Cat #28 (\uAF2C\uB9C8 \uACE0\uC591\uC774 \uBCBD)"
+  catNameEnglish: Cat #28
   rarity: 1
-  sprite: {fileID: 146100700641652640, guid: 6cc3bde26c68ef24a82480574b160a41, type: 3}
+  sprite: {fileID: -1725372763620263744, guid: 6cc3bde26c68ef24a82480574b160a41, type: 3}
   baseHp: 46000
   baseAtk: 14833
   speed: 58
   skillNameKorean: "\uAF2C\uB9C8 \uBE14\uB85D \uC7A5\uB9C9"
-  skillNameEnglish: "\uAF2C\uB9C8 \uBE14\uB85D \uC7A5\uB9C9"
+  skillNameEnglish: Mini Block Shield
   attackSkillsKorean: "\uAF2C\uB9C8 \uBE14\uB85D \uC7A5\uB9C9, \uC81C\uD55C \uC2A4\uD14C\uC774\uC9C0
     \uC218\uBE44"
   defenseSkillKorean: "\uAF2C\uB9C8 \uBC29\uD328 \uCCA0\uBCBD (\uCCB4\uB825 1.2\uBC30)"

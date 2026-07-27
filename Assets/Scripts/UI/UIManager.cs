@@ -73,10 +73,12 @@ namespace PocketRoguelike
 
         public void HandleStateChanged(GameState state)
         {
+            bool inBattleFlow = (state == GameState.StageBattle || state == GameState.Catching || state == GameState.PartyManage);
+
             // Toggle panels based on current GameState
             if (starterSelectPanel != null) starterSelectPanel.SetActive(state == GameState.StarterSelect);
-            if (battlePanel != null) battlePanel.SetActive(state == GameState.StageBattle || state == GameState.Catching || state == GameState.PartyManage || state == GameState.StageClear);
-            if (partyPanel != null) partyPanel.SetActive(state == GameState.StageBattle || state == GameState.Catching || state == GameState.PartyManage);
+            if (battlePanel != null) battlePanel.SetActive(inBattleFlow || state == GameState.StageClear);
+            if (partyPanel != null) partyPanel.SetActive(inBattleFlow && PartyUI.IsUserOpen);
             if (partyManageModalPanel != null) partyManageModalPanel.SetActive(state == GameState.PartyManage);
             if (stageClearPanel != null) stageClearPanel.SetActive(state == GameState.StageClear);
             if (resultPanel != null) resultPanel.SetActive(state == GameState.GameOver || state == GameState.Victory);

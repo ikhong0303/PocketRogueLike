@@ -15,14 +15,14 @@ MonoBehaviour:
   dexNo: 26
   catName: "\uACE0\uC591\uC774 \uB0E5\uBBF8"
   catNameKorean: "\uACE0\uC591\uC774 \uB0E5\uBBF8"
-  catNameEnglish: "Cat #26 (\uACE0\uC591\uC774 \uB0E5\uBBF8)"
+  catNameEnglish: Cat #26
   rarity: 1
-  sprite: {fileID: -444103975889571560, guid: 6cc3bde26c68ef24a82480574b160a41, type: 3}
+  sprite: {fileID: 440416837804358976, guid: 6cc3bde26c68ef24a82480574b160a41, type: 3}
   baseHp: 43000
   baseAtk: 14000
   speed: 56
   skillNameKorean: "\uBC14\uC8FC\uCE74 \uC6D0\uAC70\uB9AC \uD3EC\uACA9"
-  skillNameEnglish: "\uBC14\uC8FC\uCE74 \uC6D0\uAC70\uB9AC \uD3EC\uACA9"
+  skillNameEnglish: Bazooka Cannon Shell
   attackSkillsKorean: "\uBC14\uC8FC\uCE74 \uC6D0\uAC70\uB9AC \uD3EC\uACA9, \uB300\uD615
     \uBBF8\uC0AC\uC77C \uC138\uB840"
   defenseSkillKorean: "\uC6D0\uAC70\uB9AC \uC0AC\uACA9 \uBC18\uB3D9 \uBB34\uD6A8"

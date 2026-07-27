@@ -18,6 +18,7 @@ namespace PocketRoguelike
         }
 
         public static PartyUI Instance { get; private set; }
+        public static bool IsUserOpen { get; set; } = true;
 
         [SerializeField] private List<PartySlotUI> slots = new List<PartySlotUI>(6);
 
@@ -29,13 +30,14 @@ namespace PocketRoguelike
 
         public void ToggleVisibility()
         {
-            bool targetState = !gameObject.activeSelf;
-            gameObject.SetActive(targetState);
-            Debug.Log($"[PartyUI] Party Panel Visibility Toggled -> {targetState}");
+            IsUserOpen = !gameObject.activeSelf;
+            gameObject.SetActive(IsUserOpen);
+            Debug.Log($"[PartyUI] Party Panel Visibility Toggled -> {IsUserOpen}");
         }
 
         public void SetVisible(bool visible)
         {
+            IsUserOpen = visible;
             gameObject.SetActive(visible);
         }
 

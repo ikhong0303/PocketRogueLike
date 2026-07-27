@@ -8,7 +8,7 @@ namespace PocketRoguelike.EditorTools
 {
     public static class SoundManagerAutoBuilder
     {
-        [MenuItem("Tools/Build SoundManager Scene")]
+        [MenuItem("Tools/Build SoundManager Scene Auto")]
         public static void BuildSoundManagerScene()
         {
             string scenePath = "Assets/Scenes/Soundmanager.unity";

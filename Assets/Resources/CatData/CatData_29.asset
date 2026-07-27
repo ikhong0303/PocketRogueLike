@@ -15,14 +15,14 @@ MonoBehaviour:
   dexNo: 29
   catName: "\uAF2C\uB9C8 \uBC30\uD2C0 \uACE0\uC591\uC774"
   catNameKorean: "\uAF2C\uB9C8 \uBC30\uD2C0 \uACE0\uC591\uC774"
-  catNameEnglish: "Cat #29 (\uAF2C\uB9C8 \uBC30\uD2C0 \uACE0\uC591\uC774)"
+  catNameEnglish: Cat #29
   rarity: 1
-  sprite: {fileID: -5036532189963400126, guid: 6cc3bde26c68ef24a82480574b160a41, type: 3}
+  sprite: {fileID: 146100700641652640, guid: 6cc3bde26c68ef24a82480574b160a41, type: 3}
   baseHp: 47500
   baseAtk: 15333
   speed: 59
   skillNameKorean: "\uAF2C\uB9C8 \uBE68\uAC04 \uC801 \uD2B9\uACF5"
-  skillNameEnglish: "\uAF2C\uB9C8 \uBE68\uAC04 \uC801 \uD2B9\uACF5"
+  skillNameEnglish: Mini Anti-Red Assault
   attackSkillsKorean: "\uAF2C\uB9C8 \uBE68\uAC04 \uC801 \uD2B9\uACF5, \uAF2C\uB9C8
     \uC5F0\uC18D \uAC80\uC220"
   defenseSkillKorean: "\uBE68\uAC04 \uC801 \uB370\uBBF8\uC9C0 25% \uAC10\uC1C4"

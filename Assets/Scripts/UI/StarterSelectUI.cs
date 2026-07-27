@@ -51,7 +51,6 @@ namespace PocketRoguelike
                 startRunButton.onClick.AddListener(OnStartRunClicked);
             }
 
-            SelectDefaultStarters();
             PopulateStarterOptions();
             UpdateBudgetUI();
         }

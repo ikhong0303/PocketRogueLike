@@ -168,6 +168,18 @@ namespace PocketRoguelike
             RefreshLocalizedMessages();
         }
 
+        public void RefreshPlayerHp()
+        {
+            CatInstance player = BattleManager.Instance != null && BattleManager.Instance.PlayerCat != null 
+                ? BattleManager.Instance.PlayerCat 
+                : PartyManager.Instance?.GetActiveCat();
+
+            if (player != null && player.Data != null)
+            {
+                UpdateHp(player, playerHpSlider, playerHpText);
+            }
+        }
+
         private void RefreshLocalizedBattleView(CatInstance player, CatInstance enemy)
         {
             if (StageManager.Instance != null)

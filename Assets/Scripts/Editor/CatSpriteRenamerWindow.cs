@@ -8,8 +8,8 @@ namespace PocketRoguelike.EditorTools
 {
     public class CatSpriteRenamerWindow : EditorWindow
     {
-        [SerializeField] private Texture2D[] spriteSheets = new Texture2D[4];
-        [SerializeField] private string[] catNames = new string[100];
+        [SerializeField] private List<Texture2D> spriteSheets = new List<Texture2D>();
+        [SerializeField] private string[] catNames = new string[300];
 
         private string namePrefix = "cat_";
         private string bulkPasteText = "";
@@ -32,41 +32,43 @@ namespace PocketRoguelike.EditorTools
 
         private void InitDefaultValues()
         {
-            // Auto-load 4 textures from Assets/Image/Cats or Assets/cats if fields are null
-            if (spriteSheets == null || spriteSheets.Length != 4 || spriteSheets[0] == null)
+            string[] searchFolders = new string[] { "Assets/Image/Cats", "Assets/cats", "Assets/Cats" };
+            List<string> foundPaths = new List<string>();
+
+            foreach (string folder in searchFolders)
             {
-                spriteSheets = new Texture2D[4];
-                string[] searchFolders = new string[] { "Assets/Image/Cats", "Assets/cats", "Assets/Cats" };
-                List<string> foundPaths = new List<string>();
-
-                foreach (string folder in searchFolders)
+                if (Directory.Exists(folder))
                 {
-                    if (Directory.Exists(folder))
-                    {
-                        string[] files = Directory.GetFiles(folder, "*.png")
-                            .OrderBy(f => f)
-                            .ToArray();
-                        foundPaths.AddRange(files);
-                    }
-                }
-
-                for (int i = 0; i < Mathf.Min(4, foundPaths.Count); i++)
-                {
-                    spriteSheets[i] = AssetDatabase.LoadAssetAtPath<Texture2D>(foundPaths[i]);
+                    string[] files = Directory.GetFiles(folder, "*.png")
+                        .OrderBy(f =>
+                        {
+                            string filename = Path.GetFileNameWithoutExtension(f);
+                            int dashPos = filename.IndexOf('-');
+                            if (dashPos > 0 && int.TryParse(filename.Substring(0, dashPos), out int firstId))
+                                return firstId;
+                            return 9999;
+                        })
+                        .ToArray();
+                    foundPaths.AddRange(files);
                 }
             }
 
-            // Init 100 names if empty
-            if (catNames == null || catNames.Length != 100)
+            spriteSheets = foundPaths
+                .Select(AssetDatabase.LoadAssetAtPath<Texture2D>)
+                .Where(t => t != null)
+                .ToList();
+
+            int targetCount = Mathf.Max(300, spriteSheets.Count * 25);
+            if (catNames == null || catNames.Length != targetCount)
             {
-                catNames = new string[100];
+                catNames = new string[targetCount];
                 GenerateSequentialNames(namePrefix);
             }
         }
 
         private void GenerateSequentialNames(string prefix)
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < catNames.Length; i++)
             {
                 catNames[i] = $"{prefix}{i + 1}";
             }
@@ -75,22 +77,18 @@ namespace PocketRoguelike.EditorTools
         private void OnGUI()
         {
             GUILayout.Space(10);
-            EditorGUILayout.LabelField("🐱 Cat Sprite Renamer (100 Cats Batch Naming)", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("100개의 고양이 스프라이트 이름을 1부터 100까지 배열로 지정하여 4장의 스프라이트 시트 내 서브 스프라이트 네이밍을 일괄 변경합니다.", MessageType.Info);
+            EditorGUILayout.LabelField("🐱 Cat Sprite Renamer (Batch Naming Window)", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("고양이 스프라이트 시트 내 서브 스프라이트 이름을 커스텀 이름으로 일괄 변경합니다. Prefix 방식 또는 줄바꿈으로 붙여넣어 변경할 수 있습니다.", MessageType.Info);
 
             GUILayout.Space(10);
             scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
             // 1. Texture Fields
-            EditorGUILayout.LabelField("1. Target Sprite Sheets (4 Sheets)", EditorStyles.boldLabel);
-            if (spriteSheets == null || spriteSheets.Length != 4)
-            {
-                spriteSheets = new Texture2D[4];
-            }
+            EditorGUILayout.LabelField($"1. Target Sprite Sheets ({spriteSheets.Count} Sheets Detected)", EditorStyles.boldLabel);
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < spriteSheets.Count; i++)
             {
-                spriteSheets[i] = (Texture2D)EditorGUILayout.ObjectField($"Sheet {i + 1} (Cats {i * 25 + 1}~{(i + 1) * 25})", spriteSheets[i], typeof(Texture2D), false);
+                spriteSheets[i] = (Texture2D)EditorGUILayout.ObjectField($"Sheet {i + 1} ({spriteSheets[i]?.name ?? "Empty"})", spriteSheets[i], typeof(Texture2D), false);
             }
 
             if (GUILayout.Button("Find Cats Textures Automatically"))
@@ -105,21 +103,21 @@ namespace PocketRoguelike.EditorTools
             
             EditorGUILayout.BeginHorizontal();
             namePrefix = EditorGUILayout.TextField("Prefix Format", namePrefix);
-            if (GUILayout.Button("Generate Prefix (cat_1 ~ cat_100)", GUILayout.Width(200)))
+            if (GUILayout.Button($"Generate Prefix ({namePrefix}1 ~ {namePrefix}{catNames.Length})", GUILayout.Width(220)))
             {
                 GenerateSequentialNames(namePrefix);
             }
             EditorGUILayout.EndHorizontal();
 
             GUILayout.Space(5);
-            EditorGUILayout.LabelField("Bulk Paste Names (줄바꿈으로 구분된 100개 이름 일괄 붙여넣기):");
+            EditorGUILayout.LabelField("Bulk Paste Names (줄바꿈으로 구분된 이름 일괄 붙여넣기):");
             bulkPasteText = EditorGUILayout.TextArea(bulkPasteText, GUILayout.Height(60));
-            if (GUILayout.Button("Apply Bulk Pasted Names to 100 Array"))
+            if (GUILayout.Button($"Apply Bulk Pasted Names to Array (Max {catNames.Length})"))
             {
                 if (!string.IsNullOrWhiteSpace(bulkPasteText))
                 {
                     string[] lines = bulkPasteText.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-                    for (int i = 0; i < Mathf.Min(100, lines.Length); i++)
+                    for (int i = 0; i < Mathf.Min(catNames.Length, lines.Length); i++)
                     {
                         catNames[i] = lines[i].Trim();
                     }
@@ -129,12 +127,12 @@ namespace PocketRoguelike.EditorTools
 
             GUILayout.Space(15);
 
-            // 3. 100 Names Array List
+            // 3. Names Array List
             showNameArray = EditorGUILayout.Foldout(showNameArray, $"3. Cat Names Array (Size: {catNames.Length})");
             if (showNameArray)
             {
                 EditorGUI.indentLevel++;
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < catNames.Length; i++)
                 {
                     catNames[i] = EditorGUILayout.TextField($"[{i + 1}] Cat Name", catNames[i]);
                 }
@@ -145,7 +143,7 @@ namespace PocketRoguelike.EditorTools
 
             // 4. Action Button
             GUI.backgroundColor = new Color(0.3f, 0.8f, 0.4f);
-            if (GUILayout.Button("🚀 Rename All 100 Sprites Across 4 Sheets", GUILayout.Height(40)))
+            if (GUILayout.Button($"🚀 Rename All Sprites Across {spriteSheets.Count} Sheets", GUILayout.Height(40)))
             {
                 ApplySpriteNaming();
             }
@@ -156,7 +154,7 @@ namespace PocketRoguelike.EditorTools
 
         public void ApplySpriteNaming()
         {
-            if (spriteSheets == null || spriteSheets.Length == 0)
+            if (spriteSheets == null || spriteSheets.Count == 0)
             {
                 EditorUtility.DisplayDialog("Error", "스프라이트 시트 텍스처를 지정해주세요.", "OK");
                 return;
@@ -166,7 +164,7 @@ namespace PocketRoguelike.EditorTools
             int updatedTexturesCount = 0;
             int totalSubSpritesCount = 0;
 
-            for (int t = 0; t < spriteSheets.Length; t++)
+            for (int t = 0; t < spriteSheets.Count; t++)
             {
                 Texture2D texture = spriteSheets[t];
                 if (texture == null) continue;
@@ -184,6 +182,7 @@ namespace PocketRoguelike.EditorTools
                 importer.textureType = TextureImporterType.Sprite;
                 importer.spriteImportMode = SpriteImportMode.Multiple;
 
+#pragma warning disable 0618
                 SpriteMetaData[] spritesheet = importer.spritesheet;
                 if (spritesheet == null || spritesheet.Length == 0)
                 {
@@ -212,6 +211,7 @@ namespace PocketRoguelike.EditorTools
                 }
 
                 importer.spritesheet = sortedSprites;
+#pragma warning restore 0618
                 EditorUtility.SetDirty(importer);
                 importer.SaveAndReimport();
                 updatedTexturesCount++;

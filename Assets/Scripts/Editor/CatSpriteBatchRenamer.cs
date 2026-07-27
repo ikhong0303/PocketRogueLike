@@ -43,6 +43,7 @@ namespace PocketRoguelike.EditorTools
                 importer.textureType = TextureImporterType.Sprite;
                 importer.spriteImportMode = SpriteImportMode.Multiple;
 
+#pragma warning disable 0618
                 SpriteMetaData[] spritesheet = importer.spritesheet;
                 if (spritesheet == null || spritesheet.Length == 0) continue;
 
@@ -60,6 +61,7 @@ namespace PocketRoguelike.EditorTools
                 }
 
                 importer.spritesheet = sorted;
+#pragma warning restore 0618
                 EditorUtility.SetDirty(importer);
                 importer.SaveAndReimport();
                 Debug.Log($"[CatSpriteBatchRenamer] Successfully renamed {sorted.Length} sprites in '{Path.GetFileName(path)}'.");
